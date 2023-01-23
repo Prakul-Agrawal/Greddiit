@@ -18,10 +18,10 @@ function Auth() {
         />
       </div>
       <div className="w-full lg:w-1/2 h-full bg-orange-500">
-        <div className="flex h-1/3 justify-center items-center">
+        <div className="flex h-1/5 justify-center items-center">
           <Stack
             direction="row"
-            spacing={4}
+            spacing={7}
             className="flex justify-center items-center"
           >
             <Button variant="contained" sx={{ fontSize: 24, width: 150 }} onClick={() => setShowLogin(true)}>
@@ -32,7 +32,7 @@ function Auth() {
             </Button>
           </Stack>
         </div>
-        <div className="flex h-2/3 justify-center">
+        <div className="flex-col h-4/5 items-center justify-center">
           {
             showLogin ? <LoginPage/> : <RegisterPage/>
           }
