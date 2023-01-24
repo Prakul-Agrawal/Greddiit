@@ -1,12 +1,19 @@
-import {useState} from "react";
+import {useState, useEffect} from "react";
 import Cute from "../../assets/login.png";
 import LoginPage from "./Login";
 import RegisterPage from "./Register";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
+import {useNavigate} from "react-router-dom";
 
 function Auth() {
   const [showLogin, setShowLogin] = useState(true);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (localStorage.getItem('check')) navigate('/profile');
+  }, [navigate]);
+
 
   return (
     <div className="flex justify-center w-screen h-screen text-white">

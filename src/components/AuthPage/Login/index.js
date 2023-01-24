@@ -2,13 +2,22 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import {useState} from "react";
+import {useNavigate} from 'react-router-dom';
 
 function LoginPage() {
   const [userdata, setUserdata] = useState({ username: "", password: "" });
+  const navigate = useNavigate();
 
   const change = (c) => {
     setUserdata({ ...userdata, [c.target.id]: c.target.value });
   };
+
+  const submit = () => {
+    if (userdata.username === 'admin' && userdata.password === 'admin') {
+      localStorage.setItem('check', 'true');
+      navigate('/profile');
+    }
+  }
 
   const disabled = !userdata.username || !userdata.password;
 
@@ -42,7 +51,7 @@ function LoginPage() {
             />
           </div>
           <div className="flex justify-center mt-8">
-            <Button variant="contained" size="large" disabled={disabled}>
+            <Button variant="contained" size="large" disabled={disabled} onClick={submit}>
               Submit
             </Button>
           </div>
