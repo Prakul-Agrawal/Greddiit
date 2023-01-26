@@ -8,11 +8,20 @@ import { useNavigate } from "react-router-dom";
 
 function Auth() {
   const [showLogin, setShowLogin] = useState(true);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (localStorage.getItem("check")) navigate("/profile");
+    if (localStorage.getItem("check")) navigate("/dashboard/profile");
+    setLoading(false);
   }, [navigate]);
+
+  if (loading)
+    return (
+      <div className="flex justify-center items-center text-8xl font-bold h-full">
+        Loading
+      </div>
+    );
 
   return (
     <div className="flex justify-center w-screen h-screen text-white">
