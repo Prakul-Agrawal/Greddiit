@@ -1,19 +1,18 @@
-import {useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 import Cute from "../../assets/login.png";
 import LoginPage from "./Login";
 import RegisterPage from "./Register";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function Auth() {
   const [showLogin, setShowLogin] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (localStorage.getItem('check')) navigate('/profile');
+    if (localStorage.getItem("check")) navigate("/profile");
   }, [navigate]);
-
 
   return (
     <div className="flex justify-center w-screen h-screen text-white">
@@ -31,18 +30,24 @@ function Auth() {
             spacing={7}
             className="flex justify-center items-center"
           >
-            <Button variant="contained" sx={{ fontSize: 24, width: 150 }} onClick={() => setShowLogin(true)}>
+            <Button
+              variant="contained"
+              sx={{ fontSize: 24, width: 150 }}
+              onClick={() => setShowLogin(true)}
+            >
               Login
             </Button>
-            <Button variant="contained" sx={{ fontSize: 24 }} onClick={() => setShowLogin(false)}>
+            <Button
+              variant="contained"
+              sx={{ fontSize: 24 }}
+              onClick={() => setShowLogin(false)}
+            >
               Register
             </Button>
           </Stack>
         </div>
         <div className="flex-col h-4/5 items-center justify-center">
-          {
-            showLogin ? <LoginPage/> : <RegisterPage/>
-          }
+          {showLogin ? <LoginPage /> : <RegisterPage />}
         </div>
       </div>
     </div>

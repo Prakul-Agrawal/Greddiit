@@ -1,25 +1,27 @@
 import React from "react";
-import './App.css';
+import "./App.css";
 import Auth from "./components/AuthPage";
-import { BrowserRouter, Routes, Route } from "react-router-dom"
-import ProfilePage from "./components/ProfilePage";
-import Navbar from "./components/Navbar";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Dashboard from "./components/Dashboard";
+
 function App() {
   return (
-      <BrowserRouter>
-          <Routes>
-              <Route exact path="/" element={<Auth />} />
-              <Route element={<Navbar />}>
-                  <Route path='/profile' element={<ProfilePage />} />
-              </Route>
-              <Route path="*" element={<NotFound />} />
-          </Routes>
-      </BrowserRouter>
+    <BrowserRouter>
+      <Routes>
+        <Route path="dashboard/*" element={<Dashboard />} />
+        <Route exact path="/" element={<Auth />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
 function NotFound() {
-          return <>404 Error: Page does not exist</>;
+  return (
+    <div className="flex justify-center text-6xl font-bold">
+      404 Error: Page does not exist
+    </div>
+  );
 }
 
 export default App;

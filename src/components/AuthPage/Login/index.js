@@ -1,8 +1,8 @@
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import {useState} from "react";
-import {useNavigate} from 'react-router-dom';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function LoginPage() {
   const [userdata, setUserdata] = useState({ username: "", password: "" });
@@ -13,11 +13,11 @@ function LoginPage() {
   };
 
   const submit = () => {
-    if (userdata.username === 'admin' && userdata.password === 'admin') {
-      localStorage.setItem('check', 'true');
-      navigate('/profile');
+    if (userdata.username === "admin" && userdata.password === "admin") {
+      localStorage.setItem("check", "true");
+      navigate("/dashboard/profile");
     }
-  }
+  };
 
   const disabled = !userdata.username || !userdata.password;
 
@@ -36,11 +36,7 @@ function LoginPage() {
           autoComplete="off"
         >
           <div className="bg-white rounded-lg m-3">
-            <TextField
-              id="username"
-              label="Username"
-              onChange={change}
-            />
+            <TextField id="username" label="Username" onChange={change} />
           </div>
           <div className="bg-white rounded-lg m-3">
             <TextField
@@ -51,7 +47,12 @@ function LoginPage() {
             />
           </div>
           <div className="flex justify-center mt-8">
-            <Button variant="contained" size="large" disabled={disabled} onClick={submit}>
+            <Button
+              variant="contained"
+              size="large"
+              disabled={disabled}
+              onClick={submit}
+            >
               Submit
             </Button>
           </div>

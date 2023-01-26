@@ -43,38 +43,20 @@ function RegisterPage() {
         >
           <div className="flex justify-center">
             <div className="bg-white rounded-lg m-1">
-              <TextField
-                className="bg-white"
-                id="fname"
-                label="First Name"
-                onChange={change}
-              />
+              <TextField id="fname" label="First Name" onChange={change} />
             </div>
             <div className="bg-white rounded-lg m-1">
-              <TextField
-                id="lname"
-                label="Last Name"
-                onChange={change}
-              />
+              <TextField id="lname" label="Last Name" onChange={change} />
             </div>
           </div>
           <div className="flex justify-center mb-5">
             <div className="bg-white rounded-lg m-1">
-              <TextField
-                id="age"
-                label="Age"
-                type="number"
-                onChange={change}
-              />
+              <TextField id="age" label="Age" type="number" onChange={change} />
             </div>
           </div>
           <div className="flex justify-center mb-5">
             <div className="bg-white rounded-lg m-1">
-              <TextField
-                id="email"
-                label="Email ID"
-                onChange={change}
-              />
+              <TextField id="email" label="Email ID" onChange={change} />
             </div>
             <div className="bg-white rounded-lg m-1">
               <TextField
@@ -87,11 +69,7 @@ function RegisterPage() {
           </div>
           <div className="flex justify-center">
             <div className="bg-white rounded-lg m-1">
-              <TextField
-                id="username"
-                label="Username"
-                onChange={change}
-              />
+              <TextField id="username" label="Username" onChange={change} />
             </div>
           </div>
           <div className="flex justify-center">
