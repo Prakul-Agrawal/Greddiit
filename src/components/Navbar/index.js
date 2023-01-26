@@ -3,7 +3,6 @@ import PersonIcon from "@mui/icons-material/Person";
 import { Link } from "react-router-dom";
 
 function Navbar() {
-
   const logout = () => {
     localStorage.removeItem("check");
   };

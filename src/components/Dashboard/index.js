@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import ProfilePage from "../ProfilePage";
@@ -7,11 +7,23 @@ import Navbar from "../Navbar";
 function Dashboard() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
+  const location = useLocation();
 
   useEffect(() => {
     if (!localStorage.getItem("check")) navigate("/");
     setLoading(false);
   }, [navigate]);
+
+  useEffect(() => {
+    if (
+      location.pathname !== "/dashboard" &&
+      location.pathname !== "/dashboard/profile" &&
+      location.pathname !== "/dashboard/" &&
+      location.pathname !== "/dashboard/profile/"
+    )
+      navigate("/notfound");
+    // console.log(location.pathname)
+  }, [location, navigate]);
 
   if (loading)
     return (
