@@ -13,8 +13,8 @@ mongoose
   .then(() => server.listen(5000, () => console.log("Connected")))
   .catch((err) => console.log(err));
 
-server.use(express.static("public"));
-server.use(express.urlencoded({ extended: true }));
+// server.use(express.static("public"));
+// server.use(express.urlencoded({ extended: true }));
 
 server.use("/user", userRoutes);
 
