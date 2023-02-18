@@ -1,15 +1,24 @@
 const User = require("../models/User");
-const bcrypt = require('bcryptjs');
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 const register_user = async (req, res) => {
   const { first_name, last_name, username, password, age, contact_no, email } =
     req.body;
 
   try {
-    const temp_user = await User.findOne({ username });
+    const temp_user_username = await User.findOne({ username });
 
-    if (temp_user) {
-      return res.status(400).json({ errors: [{ msg: "User already exists" }] });
+    if (temp_user_username) {
+      return res.status(400).json({ msg: "User already exists" });
+    }
+
+    const temp_user_email = await User.findOne({ email });
+
+    if (temp_user_email) {
+      return res
+        .status(400)
+        .json({ msg: "Email already exists" });
     }
 
     const user = new User({
@@ -19,7 +28,7 @@ const register_user = async (req, res) => {
       password,
       age,
       contact_no,
-      email
+      email,
     });
 
     const salt = await bcrypt.genSalt(10);
@@ -28,9 +37,21 @@ const register_user = async (req, res) => {
 
     await user.save();
 
+    const payload = {
+      user: {
+        id: user.id,
+      },
+    };
 
-
-    res.send("User registered");
+    jwt.sign(
+      payload,
+      process.env.SECRETKEY,
+      { expiresIn: 360000 },
+      (err, token) => {
+        if (err) throw err;
+        res.json({ token });
+      }
+    );
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server error");
@@ -98,6 +119,9 @@ const display_one = (req, res) => {
 const display_by_id = async (req, res) => {
   try {
     const id = req.params.id;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(404).json({error: 'No such user'});
+    }
     const user = await User.findById(id);
     res.send(user);
   } catch (err) {
