@@ -1,17 +1,31 @@
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import Stack from "@mui/material/Stack";
 import FollowPage from "./Follow";
 
 function ProfilePage() {
   const [editable, setEditable] = useState(false);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const response = await fetch('/api/user');
+      const json = await response.json();
+
+      if (response.ok) {
+        setUser(json);
+      }
+    }
+
+    fetchUser();
+  }, [])
 
   return (
     <>
       <div className="flex mx-auto text-7xl font-extrabold text-white m-5">
-        Profile Page
+        Profile Page for {user && user.username}
       </div>
       <div className="flex flex-1">
         <div className="w-1/2 h-full justify-center items-center">
@@ -30,6 +44,7 @@ function ProfilePage() {
                   <TextField
                     id="fname"
                     label="First Name"
+                    // defaultValue={user && user.username}
                     defaultValue="Prakul"
                     InputProps={{
                       readOnly: !editable,

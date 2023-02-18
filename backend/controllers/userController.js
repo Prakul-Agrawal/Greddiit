@@ -105,16 +105,19 @@ const display_all = (req, res) => {
       console.log(err);
     });
 };
+*/
 
 const display_one = (req, res) => {
-  User.findById("63eba09b5f75bed5fd8fbc7d")
+  User.findById("63f0c7f4d27324aacc31d845")
     .then((result) => {
-      res.send(result);
+      res.status(200).json(result);
     })
     .catch((err) => {
       console.log(err);
     });
 };
+
+/*
 
 const display_by_id = async (req, res) => {
   try {
@@ -145,7 +148,7 @@ module.exports = {
   // create_user_post,
   // create_user_get,
   // display_all,
-  // display_one,
+  display_one,
   // display_by_id,
   // delete_by_id,
   register_user,
