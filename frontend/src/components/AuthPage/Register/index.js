@@ -3,9 +3,9 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { useState } from "react";
 import axios from "axios";
-import {useRecoilState} from "recoil";
-import {userState} from "../../../atoms/user";
-import {useNavigate} from "react-router-dom";
+import { useRecoilState } from "recoil";
+import { userState } from "../../../atoms/user";
+import { useNavigate } from "react-router-dom";
 
 function RegisterPage() {
   const navigate = useNavigate();
@@ -38,7 +38,7 @@ function RegisterPage() {
         });
         localStorage.setItem("token", response.data.token);
         setUser(response.data.user);
-        localStorage.setItem("userInfo", JSON.stringify(response.data.user));
+        // localStorage.setItem("userInfo", JSON.stringify(response.data.user));
         navigate("/dashboard/profile");
       } catch (err) {
         if (err.response) {

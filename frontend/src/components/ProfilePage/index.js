@@ -6,13 +6,39 @@ import Stack from "@mui/material/Stack";
 import FollowPage from "./Follow";
 import { useRecoilState } from "recoil";
 import { userState } from "../../atoms/user";
+import axios from "axios";
 
 function ProfilePage() {
   const [editable, setEditable] = useState(false);
   const [user, setUser] = useRecoilState(userState);
 
   useEffect(() => {
-    setUser(JSON.parse(localStorage.getItem("userInfo")));
+    const getUser = async () => {
+      const config = {
+        headers: {
+          "x-auth-token": localStorage.getItem("token"),
+        },
+      };
+      try {
+        const response = await axios.get("/api/user", config);
+        console.log("#####");
+        console.log(response.data.user);
+        setUser(response.data.user);
+      } catch (err) {
+        if (err.response) {
+          console.log(err.response.data);
+          console.log(err.response.status);
+          console.log(err.response.headers);
+        } else if (err.request) {
+          console.log(err.request);
+        } else {
+          console.log(err.message);
+        }
+      }
+    };
+
+    getUser();
+    // setUser(JSON.parse(localStorage.getItem("userInfo")));
   }, []);
 
   if (!user)
@@ -40,20 +66,22 @@ function ProfilePage() {
               autoComplete="off"
             >
               <div className="flex justify-center mb-5">
-                <div className="bg-white rounded-lg m-1 mr-5">
+                <div className="text-center bg-white rounded-lg m-1 mr-5">
+                  <div>First Name</div>
                   <TextField
                     id="fname"
-                    label="First Name"
+                    // label="First Name"
                     value={user.first_name}
                     InputProps={{
                       readOnly: !editable,
                     }}
                   />
                 </div>
-                <div className="bg-white rounded-lg m-1 ml-5">
+                <div className="text-center bg-white rounded-lg m-1 ml-5">
+                  <div>Last Name</div>
                   <TextField
                     id="lname"
-                    label="Last Name"
+                    // label="Last Name"
                     value={user.last_name}
                     InputProps={{
                       readOnly: !editable,
@@ -62,10 +90,11 @@ function ProfilePage() {
                 </div>
               </div>
               <div className="flex justify-center mb-5">
-                <div className="bg-white rounded-lg m-1">
+                <div className="text-center bg-white rounded-lg m-1">
+                  <div>Age Limit</div>
                   <TextField
                     id="age"
-                    label="Age"
+                    // label="Age"
                     type="number"
                     value={user.age}
                     InputProps={{
@@ -75,20 +104,22 @@ function ProfilePage() {
                 </div>
               </div>
               <div className="flex justify-center mb-5">
-                <div className="bg-white rounded-lg m-1 mr-5">
+                <div className="text-center bg-white rounded-lg m-1 mr-5">
+                  <div>Email ID</div>
                   <TextField
                     id="email"
-                    label="Email ID"
+                    // label="Email ID"
                     value={user.email}
                     InputProps={{
                       readOnly: !editable,
                     }}
                   />
                 </div>
-                <div className="bg-white rounded-lg m-1 ml-5">
+                <div className="text-center bg-white rounded-lg m-1 ml-5">
+                  <div>Contact Number</div>
                   <TextField
                     id="number"
-                    label="Contact Number"
+                    // label="Contact Number"
                     type="number"
                     value={user.contact_no}
                     InputProps={{
