@@ -16,9 +16,7 @@ const register_user = async (req, res) => {
     const temp_user_email = await User.findOne({ email });
 
     if (temp_user_email) {
-      return res
-        .status(400)
-        .json({ msg: "Email already exists" });
+      return res.status(400).json({ msg: "Email already exists" });
     }
 
     const user = new User({
@@ -105,7 +103,6 @@ const display_all = (req, res) => {
       console.log(err);
     });
 };
-*/
 
 const display_one = (req, res) => {
   User.findById("63f0c7f4d27324aacc31d845")
@@ -116,8 +113,6 @@ const display_one = (req, res) => {
       console.log(err);
     });
 };
-
-/*
 
 const display_by_id = async (req, res) => {
   try {

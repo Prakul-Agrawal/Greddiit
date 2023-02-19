@@ -12,7 +12,7 @@ function Auth() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (localStorage.getItem("check")) navigate("/dashboard/profile");
+    if (localStorage.getItem("token")) navigate("/dashboard/profile");
     setLoading(false);
   }, [navigate]);
 

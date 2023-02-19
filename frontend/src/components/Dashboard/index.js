@@ -10,7 +10,7 @@ function Dashboard() {
   const location = useLocation();
 
   useEffect(() => {
-    if (!localStorage.getItem("check")) navigate("/");
+    if (!localStorage.getItem("token")) navigate("/");
     setLoading(false);
   }, [navigate]);
 

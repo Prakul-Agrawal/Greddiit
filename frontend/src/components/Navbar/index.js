@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 function Navbar() {
   const logout = () => {
-    localStorage.removeItem("check");
+    localStorage.removeItem("token");
   };
 
   return (

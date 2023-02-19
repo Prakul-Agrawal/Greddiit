@@ -4,30 +4,13 @@ import Button from "@mui/material/Button";
 import { useEffect, useState } from "react";
 import Stack from "@mui/material/Stack";
 import FollowPage from "./Follow";
-import axios from "axios";
 
 function ProfilePage() {
   const [editable, setEditable] = useState(false);
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const response = await axios.get("/api/user");
-        setUser(response.data);
-      } catch (err) {
-        if (err.response) {
-          console.log(err.response.data);
-          console.log(err.response.status);
-          console.log(err.response.headers);
-        } else if (err.request) {
-          console.log(err.request);
-        } else {
-          console.log(err.message);
-        }
-      }
-    };
-    fetchUser();
+    setUser(JSON.parse(localStorage.getItem("userInfo")));
   }, []);
 
   if (!user)

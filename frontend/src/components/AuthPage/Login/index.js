@@ -3,6 +3,7 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function LoginPage() {
   const [userdata, setUserdata] = useState({ username: "", password: "" });
@@ -13,10 +14,29 @@ function LoginPage() {
   };
 
   const submit = () => {
-    if (userdata.username === "admin" && userdata.password === "admin") {
-      localStorage.setItem("check", "true");
-      navigate("/dashboard/profile");
-    }
+    const loginUser = async () => {
+      try {
+        const response = await axios.post("/api/auth", {
+          username: userdata.username,
+          password: userdata.password,
+        });
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("userInfo", JSON.stringify(response.data.user));
+        navigate("/dashboard/profile");
+      } catch (err) {
+        if (err.response) {
+          console.log(err.response.data);
+          console.log(err.response.status);
+          console.log(err.response.headers);
+        } else if (err.request) {
+          console.log(err.request);
+        } else {
+          console.log(err.message);
+        }
+      }
+    };
+
+    loginUser();
   };
 
   const disabled = !userdata.username || !userdata.password;
