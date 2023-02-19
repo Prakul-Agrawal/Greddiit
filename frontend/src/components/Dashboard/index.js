@@ -28,7 +28,7 @@ function Dashboard() {
   if (loading)
     return (
       <div className="flex justify-center items-center text-8xl font-bold h-full">
-        Loading
+        Loading...
       </div>
     );
   return (

@@ -1,9 +1,10 @@
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import Stack from "@mui/material/Stack";
 import FollowPage from "./Follow";
+import axios from "axios";
 
 function ProfilePage() {
   const [editable, setEditable] = useState(false);
@@ -11,21 +12,35 @@ function ProfilePage() {
 
   useEffect(() => {
     const fetchUser = async () => {
-      const response = await fetch('/api/user');
-      const json = await response.json();
-
-      if (response.ok) {
-        setUser(json);
+      try {
+        const response = await axios.get("/api/user");
+        setUser(response.data);
+      } catch (err) {
+        if (err.response) {
+          console.log(err.response.data);
+          console.log(err.response.status);
+          console.log(err.response.headers);
+        } else if (err.request) {
+          console.log(err.request);
+        } else {
+          console.log(err.message);
+        }
       }
-    }
-
+    };
     fetchUser();
-  }, [])
+  }, []);
+
+  if (!user)
+    return (
+      <div className="flex justify-center items-center text-8xl font-bold h-full">
+        Loading...
+      </div>
+    );
 
   return (
     <>
       <div className="flex mx-auto text-7xl font-extrabold text-white m-5">
-        Profile Page for {user && user.username}
+        Profile Page of {user.username}
       </div>
       <div className="flex flex-1">
         <div className="w-1/2 h-full justify-center items-center">
@@ -44,8 +59,7 @@ function ProfilePage() {
                   <TextField
                     id="fname"
                     label="First Name"
-                    // defaultValue={user && user.username}
-                    defaultValue="Prakul"
+                    defaultValue={user.first_name}
                     InputProps={{
                       readOnly: !editable,
                     }}
@@ -55,7 +69,7 @@ function ProfilePage() {
                   <TextField
                     id="lname"
                     label="Last Name"
-                    defaultValue="Agrawal"
+                    defaultValue={user.last_name}
                     InputProps={{
                       readOnly: !editable,
                     }}
@@ -68,7 +82,7 @@ function ProfilePage() {
                     id="age"
                     label="Age"
                     type="number"
-                    defaultValue="19"
+                    defaultValue={user.age}
                     InputProps={{
                       readOnly: !editable,
                     }}
@@ -80,7 +94,7 @@ function ProfilePage() {
                   <TextField
                     id="email"
                     label="Email ID"
-                    defaultValue="temp@gmail.com"
+                    defaultValue={user.email}
                     InputProps={{
                       readOnly: !editable,
                     }}
@@ -91,7 +105,7 @@ function ProfilePage() {
                     id="number"
                     label="Contact Number"
                     type="number"
-                    defaultValue="9876543210"
+                    defaultValue={user.contact_no}
                     InputProps={{
                       readOnly: !editable,
                     }}
