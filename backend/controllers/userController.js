@@ -143,7 +143,7 @@ module.exports = {
   // create_user_post,
   // create_user_get,
   // display_all,
-  display_one,
+  // display_one,
   // display_by_id,
   // delete_by_id,
   register_user,

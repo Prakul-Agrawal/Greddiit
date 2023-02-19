@@ -15,7 +15,7 @@ const router = express.Router();
 //
 // router.delete("/:id", userController.delete_by_id);
 
-router.get("/", userController.display_one);
+// router.get("/", userController.display_one);
 
 router.post("/", userController.register_user);
 

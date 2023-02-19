@@ -4,10 +4,12 @@ import Button from "@mui/material/Button";
 import { useEffect, useState } from "react";
 import Stack from "@mui/material/Stack";
 import FollowPage from "./Follow";
+import { useRecoilState } from "recoil";
+import { userState } from "../../atoms/user";
 
 function ProfilePage() {
   const [editable, setEditable] = useState(false);
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useRecoilState(userState);
 
   useEffect(() => {
     setUser(JSON.parse(localStorage.getItem("userInfo")));
@@ -42,7 +44,7 @@ function ProfilePage() {
                   <TextField
                     id="fname"
                     label="First Name"
-                    defaultValue={user.first_name}
+                    value={user.first_name}
                     InputProps={{
                       readOnly: !editable,
                     }}
@@ -52,7 +54,7 @@ function ProfilePage() {
                   <TextField
                     id="lname"
                     label="Last Name"
-                    defaultValue={user.last_name}
+                    value={user.last_name}
                     InputProps={{
                       readOnly: !editable,
                     }}
@@ -65,7 +67,7 @@ function ProfilePage() {
                     id="age"
                     label="Age"
                     type="number"
-                    defaultValue={user.age}
+                    value={user.age}
                     InputProps={{
                       readOnly: !editable,
                     }}
@@ -77,7 +79,7 @@ function ProfilePage() {
                   <TextField
                     id="email"
                     label="Email ID"
-                    defaultValue={user.email}
+                    value={user.email}
                     InputProps={{
                       readOnly: !editable,
                     }}
@@ -88,7 +90,7 @@ function ProfilePage() {
                     id="number"
                     label="Contact Number"
                     type="number"
-                    defaultValue={user.contact_no}
+                    value={user.contact_no}
                     InputProps={{
                       readOnly: !editable,
                     }}

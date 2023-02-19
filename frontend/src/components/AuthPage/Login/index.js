@@ -4,10 +4,13 @@ import TextField from "@mui/material/TextField";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useRecoilState } from "recoil";
+import { userState } from "../../../atoms/user";
 
 function LoginPage() {
   const [userdata, setUserdata] = useState({ username: "", password: "" });
   const navigate = useNavigate();
+  const [user, setUser] = useRecoilState(userState);
 
   const change = (c) => {
     setUserdata({ ...userdata, [c.target.id]: c.target.value });
@@ -21,7 +24,8 @@ function LoginPage() {
           password: userdata.password,
         });
         localStorage.setItem("token", response.data.token);
-        localStorage.setItem("userInfo", JSON.stringify(response.data.user));
+        setUser(response.data.user);
+        localStorage.setItem("userInfo", JSON.stringify(user));
         navigate("/dashboard/profile");
       } catch (err) {
         if (err.response) {
