@@ -25,7 +25,7 @@ function LoginPage() {
         });
         localStorage.setItem("token", response.data.token);
         setUser(response.data.user);
-        localStorage.setItem("userInfo", JSON.stringify(user));
+        localStorage.setItem("userInfo", JSON.stringify(response.data.user));
         navigate("/dashboard/profile");
       } catch (err) {
         if (err.response) {

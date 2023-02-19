@@ -8,8 +8,6 @@ const login = async (req, res) => {
   try {
     const user = await User.findOne({ username });
 
-    // console.log(user);
-
     if (!user) {
       return res.status(400).json({ msg: "User does not exist" });
     }
@@ -17,7 +15,6 @@ const login = async (req, res) => {
     const isMatch = await bcrypt.compare(password, user.password);
 
     user.password = undefined;
-    // console.log(user);
 
     if (!isMatch) {
       return res.status(400).json({ msg: "Password wrong" });

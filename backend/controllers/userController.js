@@ -41,13 +41,15 @@ const register_user = async (req, res) => {
       },
     };
 
+    user.password = undefined;
+
     jwt.sign(
       payload,
       process.env.SECRETKEY,
       { expiresIn: 360000 },
       (err, token) => {
         if (err) throw err;
-        res.json({ token });
+        res.json({ token, user });
       }
     );
   } catch (err) {

@@ -2,8 +2,13 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { useState } from "react";
+import axios from "axios";
+import {useRecoilState} from "recoil";
+import {userState} from "../../../atoms/user";
+import {useNavigate} from "react-router-dom";
 
 function RegisterPage() {
+  const navigate = useNavigate();
   const [userdata, setUserdata] = useState({
     fname: "",
     lname: "",
@@ -13,9 +18,42 @@ function RegisterPage() {
     username: "",
     password: "",
   });
+  const [user, setUser] = useRecoilState(userState);
 
   const change = (c) => {
     setUserdata({ ...userdata, [c.target.id]: c.target.value });
+  };
+
+  const submit = () => {
+    const registerUser = async () => {
+      try {
+        const response = await axios.post("/api/user", {
+          username: userdata.username,
+          password: userdata.password,
+          first_name: userdata.fname,
+          last_name: userdata.lname,
+          age: userdata.age,
+          contact_no: userdata.number,
+          email: userdata.email,
+        });
+        localStorage.setItem("token", response.data.token);
+        setUser(response.data.user);
+        localStorage.setItem("userInfo", JSON.stringify(response.data.user));
+        navigate("/dashboard/profile");
+      } catch (err) {
+        if (err.response) {
+          console.log(err.response.data);
+          console.log(err.response.status);
+          console.log(err.response.headers);
+        } else if (err.request) {
+          console.log(err.request);
+        } else {
+          console.log(err.message);
+        }
+      }
+    };
+
+    registerUser();
   };
 
   const disabled = !(
@@ -83,7 +121,12 @@ function RegisterPage() {
             </div>
           </div>
           <div className="flex justify-center mt-8">
-            <Button variant="contained" size="large" disabled={disabled}>
+            <Button
+              variant="contained"
+              size="large"
+              disabled={disabled}
+              onClick={submit}
+            >
               Submit
             </Button>
           </div>
