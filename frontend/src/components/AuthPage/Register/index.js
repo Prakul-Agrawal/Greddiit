@@ -3,8 +3,6 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { useState } from "react";
 import axios from "axios";
-import { useRecoilState } from "recoil";
-import { userState } from "../../../atoms/user";
 import { useNavigate } from "react-router-dom";
 
 function RegisterPage() {
@@ -18,7 +16,6 @@ function RegisterPage() {
     username: "",
     password: "",
   });
-  const [user, setUser] = useRecoilState(userState);
 
   const change = (c) => {
     setUserdata({ ...userdata, [c.target.id]: c.target.value });
@@ -37,8 +34,6 @@ function RegisterPage() {
           email: userdata.email,
         });
         localStorage.setItem("token", response.data.token);
-        setUser(response.data.user);
-        // localStorage.setItem("userInfo", JSON.stringify(response.data.user));
         navigate("/dashboard/profile");
       } catch (err) {
         if (err.response) {
