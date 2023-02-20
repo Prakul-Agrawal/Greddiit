@@ -115,7 +115,7 @@ const register_user = async (req, res) => {
 //     });
 // };
 
-const display_one = async (req, res) => {
+const get_user = async (req, res) => {
   try {
     const user = await User.findById(req.user.id);
     user.password = undefined;
@@ -128,6 +128,14 @@ const display_one = async (req, res) => {
 
 const update_user = async (req, res) => {
   try {
+    const user_by_email = await User.findOne({ email: req.body.email });
+    const user_by_email_username = await User.findOne({
+      email: req.body.email,
+      username: req.body.username,
+    });
+    if (!user_by_email_username && user_by_email) {
+      return res.status(400).json({ msg: "Email already exists" });
+    }
     await User.findOneAndUpdate({ username: req.body.username }, req.body);
     res.status(200).json("User updated");
   } catch (err) {
@@ -165,7 +173,7 @@ module.exports = {
   // create_user_post,
   // create_user_get,
   // display_all,
-  display_one,
+  get_user,
   update_user,
   // display_by_id,
   // delete_by_id,

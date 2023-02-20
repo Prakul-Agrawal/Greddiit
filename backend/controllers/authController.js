@@ -9,7 +9,7 @@ const login = async (req, res) => {
     const user = await User.findOne({ username });
 
     if (!user) {
-      return res.status(400).json({ msg: "User does not exist" });
+      return res.status(400).json({ msg: "Invalid Credentials" });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
@@ -17,7 +17,7 @@ const login = async (req, res) => {
     user.password = undefined;
 
     if (!isMatch) {
-      return res.status(400).json({ msg: "Password wrong" });
+      return res.status(400).json({ msg: "Invalid Credentials" });
     }
 
     const payload = {

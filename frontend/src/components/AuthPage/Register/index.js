@@ -40,6 +40,7 @@ function RegisterPage() {
           console.log(err.response.data);
           console.log(err.response.status);
           console.log(err.response.headers);
+          alert(err.response.data.msg);
         } else if (err.request) {
           console.log(err.request);
         } else {
