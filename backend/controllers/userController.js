@@ -126,6 +126,16 @@ const display_one = async (req, res) => {
   }
 };
 
+const update_user = async (req, res) => {
+  try {
+    await User.findOneAndUpdate({ username: req.body.username }, req.body);
+    res.status(200).json("User updated");
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server error");
+  }
+};
+
 //
 // const display_by_id = async (req, res) => {
 //   try {
@@ -156,6 +166,7 @@ module.exports = {
   // create_user_get,
   // display_all,
   display_one,
+  update_user,
   // display_by_id,
   // delete_by_id,
   register_user,

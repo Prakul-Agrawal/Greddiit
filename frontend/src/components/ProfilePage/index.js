@@ -4,19 +4,61 @@ import Button from "@mui/material/Button";
 import { useState } from "react";
 import Stack from "@mui/material/Stack";
 import FollowPage from "./Follow";
-import { useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import { userState } from "../../atoms/user";
+import axios from "axios";
 
 function ProfilePage() {
   const [editable, setEditable] = useState(false);
-  const user = useRecoilValue(userState);
+  const [user, setUser] = useRecoilState(userState);
 
-  if (!user)
+  const change = (c) => {
+    setUser({ ...user, [c.target.id]: c.target.value });
+  };
+
+  const save = () => {
+    const saveUser = async () => {
+      const config = {
+        headers: {
+          "x-auth-token": localStorage.getItem("token"),
+        },
+      };
+      try {
+        await axios.patch(
+          "/api/user",
+          {
+            username: user.username,
+            first_name: user.first_name,
+            last_name: user.last_name,
+            age: user.age,
+            contact_no: user.contact_no,
+            email: user.email,
+          },
+          config
+        );
+      } catch (err) {
+        if (err.response) {
+          console.log(err.response.data);
+          console.log(err.response.status);
+          console.log(err.response.headers);
+        } else if (err.request) {
+          console.log(err.request);
+        } else {
+          console.log(err.message);
+        }
+      }
+    };
+    saveUser();
+    setEditable(false);
+  };
+
+  if (!user._id) {
     return (
       <div className="flex justify-center items-center text-8xl font-bold h-full">
         Loading...
       </div>
     );
+  }
 
   return (
     <>
@@ -38,22 +80,24 @@ function ProfilePage() {
               <div className="flex justify-center mb-5">
                 <div className="text-center bg-white rounded-lg m-1 mr-5">
                   <TextField
-                    id="fname"
+                    id="first_name"
                     label="First Name"
-                    value={user.first_name || ""}
+                    value={user.first_name}
                     InputProps={{
                       readOnly: !editable,
                     }}
+                    onChange={change}
                   />
                 </div>
                 <div className="text-center bg-white rounded-lg m-1 ml-5">
                   <TextField
-                    id="lname"
+                    id="last_name"
                     label="Last Name"
-                    value={user.last_name || ""}
+                    value={user.last_name}
                     InputProps={{
                       readOnly: !editable,
                     }}
+                    onChange={change}
                   />
                 </div>
               </div>
@@ -63,10 +107,11 @@ function ProfilePage() {
                     id="age"
                     label="Age"
                     type="number"
-                    value={user.age || ""}
+                    value={user.age}
                     InputProps={{
                       readOnly: !editable,
                     }}
+                    onChange={change}
                   />
                 </div>
               </div>
@@ -75,21 +120,23 @@ function ProfilePage() {
                   <TextField
                     id="email"
                     label="Email ID"
-                    value={user.email || ""}
+                    value={user.email}
                     InputProps={{
                       readOnly: !editable,
                     }}
+                    onChange={change}
                   />
                 </div>
                 <div className="text-center bg-white rounded-lg m-1 ml-5">
                   <TextField
-                    id="number"
+                    id="contact_no"
                     label="Contact Number"
                     type="number"
-                    value={user.contact_no || ""}
+                    value={user.contact_no}
                     InputProps={{
                       readOnly: !editable,
                     }}
+                    onChange={change}
                   />
                 </div>
               </div>
@@ -107,13 +154,8 @@ function ProfilePage() {
                   >
                     Edit
                   </Button>
-                  {}
                   {editable && (
-                    <Button
-                      variant="contained"
-                      size="large"
-                      onClick={() => setEditable(false)}
-                    >
+                    <Button variant="contained" size="large" onClick={save}>
                       Save
                     </Button>
                   )}

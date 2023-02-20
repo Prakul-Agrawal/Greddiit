@@ -20,4 +20,6 @@ router.get("/", auth, userController.display_one);
 
 router.post("/", userController.register_user);
 
+router.patch("/", auth, userController.update_user);
+
 module.exports = router;

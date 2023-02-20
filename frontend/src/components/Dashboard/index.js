@@ -26,7 +26,6 @@ function Dashboard() {
       location.pathname !== "/dashboard/profile/"
     )
       navigate("/notfound");
-    // console.log(location.pathname)
   }, [location, navigate]);
 
   useEffect(() => {
@@ -39,8 +38,6 @@ function Dashboard() {
         };
         try {
           const response = await axios.get("/api/user", config);
-          console.log("#####");
-          console.log(response.data.user);
           setUser(response.data.user);
         } catch (err) {
           if (err.response) {
@@ -52,11 +49,13 @@ function Dashboard() {
           } else {
             console.log(err.message);
           }
+          localStorage.removeItem("token");
+          navigate("/");
         }
       }
     };
-
     getUser();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (loading)
