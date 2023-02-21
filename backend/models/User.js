@@ -32,6 +32,30 @@ const UserSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
+    followers: {
+      type: [mongoose.Schema.Types.ObjectId],
+      ref: "User",
+    },
+    followers_count: {
+      type: Number,
+      default: 0,
+    },
+    following: {
+      type: [mongoose.Schema.Types.ObjectId],
+      ref: "User",
+    },
+    following_count: {
+      type: Number,
+      default: 0,
+    },
+    posts: {
+      type: [mongoose.Schema.Types.ObjectId],
+      ref: "Post",
+    },
+    saved_posts: {
+      type: [mongoose.Schema.Types.ObjectId],
+      ref: "Post",
+    },
   },
   { timestamps: true }
 );
