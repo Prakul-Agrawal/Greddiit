@@ -24,7 +24,7 @@ function RegisterPage() {
   const submit = () => {
     const registerUser = async () => {
       try {
-        const response = await axios.post("/api/user", {
+        const response = await axios.post("/api/user/register", {
           username: userdata.username,
           password: userdata.password,
           first_name: userdata.fname,

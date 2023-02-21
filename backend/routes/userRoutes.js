@@ -18,7 +18,9 @@ const router = express.Router();
 
 router.get("/", auth, userController.get_user);
 
-router.post("/", userController.register_user);
+router.post("/register", userController.register_user);
+
+router.post("/login", userController.login_user);
 
 router.patch("/", auth, userController.update_user);
 

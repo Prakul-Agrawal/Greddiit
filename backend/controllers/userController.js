@@ -58,6 +58,45 @@ const register_user = async (req, res) => {
   }
 };
 
+const login_user = async (req, res) => {
+  const { username, password } = req.body;
+
+  try {
+    const user = await User.findOne({ username });
+
+    if (!user) {
+      return res.status(400).json({ msg: "Invalid Credentials" });
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+
+    user.password = undefined;
+
+    if (!isMatch) {
+      return res.status(400).json({ msg: "Invalid Credentials" });
+    }
+
+    const payload = {
+      user: {
+        id: user.id,
+      },
+    };
+
+    jwt.sign(
+      payload,
+      process.env.SECRETKEY,
+      { expiresIn: 3600 },
+      (err, token) => {
+        if (err) throw err;
+        res.status(200).json({ token, user });
+      }
+    );
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server error");
+  }
+};
+
 // const create_user_post = (req, res) => {
 //   console.log(req.body);
 //   // res.status(200).json({message : 'received'});
@@ -175,6 +214,7 @@ module.exports = {
   // display_all,
   get_user,
   update_user,
+  login_user,
   // display_by_id,
   // delete_by_id,
   register_user,

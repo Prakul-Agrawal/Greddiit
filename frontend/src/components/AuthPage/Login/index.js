@@ -16,7 +16,7 @@ function LoginPage() {
   const submit = () => {
     const loginUser = async () => {
       try {
-        const response = await axios.post("/api/auth", {
+        const response = await axios.post("/api/user/login", {
           username: userdata.username,
           password: userdata.password,
         });
