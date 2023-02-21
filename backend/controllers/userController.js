@@ -153,7 +153,6 @@ const login_user = async (req, res) => {
 //       console.log(err);
 //     });
 // };
-
 const get_user = async (req, res) => {
   try {
     const user = await User.findById(req.user.id);
@@ -177,6 +176,114 @@ const update_user = async (req, res) => {
     }
     await User.findOneAndUpdate({ username: req.body.username }, req.body);
     res.status(200).json("User updated");
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server error");
+  }
+};
+
+const remove_follower = async (req, res) => {
+  try {
+    const found = await User.find({
+      _id: req.user.id,
+      followers: req.body.id,
+    });
+    if (!found.length) {
+      return res.status(400).json({ msg: "Already not followed" });
+    }
+
+    await User.findOneAndUpdate(
+      { _id: req.user.id },
+      {
+        $pull: { followers: req.body.id },
+        $inc: { followers_count: -1 },
+      }
+    );
+
+    res.status(200).json("Follower removed");
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server error");
+  }
+};
+
+const add_follower = async (req, res) => {
+  try {
+    if (req.user.id === req.body.id) {
+      return res.status(400).json({ msg: "Cannot add yourself" });
+    }
+
+    const found = await User.find({
+      _id: req.user.id,
+      followers: req.body.id,
+    });
+    if (found.length) {
+      return res.status(400).json({ msg: "Already follows" });
+    }
+
+    await User.findOneAndUpdate(
+      { _id: req.user.id },
+      {
+        $push: { followers: req.body.id },
+        $inc: { followers_count: 1 },
+      }
+    );
+
+    res.status(200).json("Follower added");
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server error");
+  }
+};
+
+const unfollow = async (req, res) => {
+  try {
+    const found = await User.find({
+      _id: req.user.id,
+      following: req.body.id,
+    });
+    if (!found.length) {
+      return res.status(400).json({ msg: "Already not following" });
+    }
+
+    await User.findOneAndUpdate(
+      { _id: req.user.id },
+      {
+        $pull: { following: req.body.id },
+        $inc: { following_count: -1 },
+      }
+    );
+
+    res.status(200).json("Unfollowed user");
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server error");
+  }
+};
+
+const follow = async (req, res) => {
+  try {
+    if (req.user.id === req.body.id) {
+      return res.status(400).json({ msg: "Cannot follow yourself" });
+    }
+
+    const found = await User.find({
+      _id: req.user.id,
+      following: req.body.id,
+    });
+    if (found.length) {
+      return res.status(400).json({ msg: "Already following" });
+    }
+
+    await User.findOneAndUpdate(
+      { _id: req.user.id },
+      {
+        $push: { following: req.body.id },
+        $inc: { following_count: 1 },
+      }
+    );
+
+    res.status(200).json("Followed user");
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server error");
@@ -209,13 +316,12 @@ const update_user = async (req, res) => {
 // };
 
 module.exports = {
-  // create_user_post,
-  // create_user_get,
-  // display_all,
   get_user,
   update_user,
   login_user,
-  // display_by_id,
-  // delete_by_id,
+  remove_follower,
+  add_follower,
   register_user,
+  follow,
+  unfollow,
 };

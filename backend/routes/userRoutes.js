@@ -24,4 +24,12 @@ router.post("/login", userController.login_user);
 
 router.patch("/", auth, userController.update_user);
 
+router.patch("/follower/remove", auth, userController.remove_follower);
+
+router.patch("/follower/add", auth, userController.add_follower);
+
+router.patch("/following/unfollow", auth, userController.unfollow);
+
+router.patch("/following/follow", auth, userController.follow);
+
 module.exports = router;
