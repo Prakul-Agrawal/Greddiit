@@ -1,10 +1,17 @@
 import { useState } from "react";
+import { useRecoilValue } from "recoil";
+import { userState } from "../../../atoms/user";
 
 function FollowPage() {
   const [showFollowers, setShowFollowers] = useState(false);
   const [showFollowing, setShowFollowing] = useState(false);
-  const followers = 2,
-    following = 3;
+  const user = useRecoilValue(userState);
+  const followerList = user.followers.map((u) => (
+    <li key={u._id}>{u.username}</li>
+  ));
+  const followingList = user.following.map((u) => (
+    <li key={u._id}>{u.username}</li>
+  ));
 
   return (
     <>
@@ -14,14 +21,11 @@ function FollowPage() {
             className="text-5xl underline font-bold"
             onClick={() => setShowFollowers(!showFollowers)}
           >
-            Followers: {followers}
+            Followers: {user.followers_count}
           </div>
           {showFollowers && (
             <div className="m-7 text-3xl font-thin">
-              <ul>
-                <li>Follower 1</li>
-                <li>Follower 2</li>
-              </ul>
+              <ul>{followerList}</ul>
             </div>
           )}
         </div>
@@ -32,15 +36,11 @@ function FollowPage() {
             className="text-5xl underline font-bold"
             onClick={() => setShowFollowing(!showFollowing)}
           >
-            Following: {following}
+            Following: {user.following_count}
           </div>
           {showFollowing && (
             <div className="m-7 text-3xl font-thin">
-              <ul>
-                <li>Person 1</li>
-                <li>Person 2</li>
-                <li>Person 3</li>
-              </ul>
+              <ul>{followingList}</ul>
             </div>
           )}
         </div>
