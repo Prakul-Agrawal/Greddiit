@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose").default;
 const userRoutes = require("./routes/userRoutes");
+const subgreddiitRoutes = require("./routes/subgreddiitRoutes");
 require('dotenv').config();
 
 const server = express();
@@ -16,6 +17,8 @@ mongoose
 // server.use(express.urlencoded({ extended: true }));
 
 server.use("/api/user", userRoutes);
+
+server.use("/api/subgreddiit", subgreddiitRoutes);
 
 server.get("/", (req, res) => {
   res.send("<p>Home Page</p>");

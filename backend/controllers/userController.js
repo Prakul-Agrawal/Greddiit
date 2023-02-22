@@ -155,7 +155,10 @@ const login_user = async (req, res) => {
 // };
 const get_user = async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).populate('followers').populate('following');
+    const user = await User.findById(req.user.id)
+      .populate("followers")
+      .populate("following")
+      .populate("joined_subgreddiits");
     user.password = undefined;
     res.status(200).json({ user });
   } catch (err) {

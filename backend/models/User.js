@@ -48,6 +48,14 @@ const UserSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    moderated_subgreddiits: {
+      type: [mongoose.Schema.Types.ObjectId],
+      ref: "Subgreddiit",
+    },
+    joined_subgreddiits: {
+      type: [mongoose.Schema.Types.ObjectId],
+      ref: "Subgreddiit",
+    },
     posts: {
       type: [mongoose.Schema.Types.ObjectId],
       ref: "Post",
