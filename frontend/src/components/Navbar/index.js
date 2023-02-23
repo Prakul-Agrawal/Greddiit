@@ -1,5 +1,6 @@
 import LogoutIcon from "@mui/icons-material/Logout";
 import PersonIcon from "@mui/icons-material/Person";
+import ListAltIcon from "@mui/icons-material/ListAlt";
 import { Link } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { userState } from "../../atoms/user";
@@ -19,6 +20,14 @@ function Navbar() {
             <Link to={"/dashboard/profile"}>
               Profile
               <PersonIcon fontSize="large" style={{ color: "#FB923C" }} />
+            </Link>
+          </div>
+        </div>
+        <div className="flex justify-start bg-black w-1/2">
+          <div className="text-orange-400">
+            <Link to={"/dashboard/subgreddiits"}>
+              Subgreddiits
+              <ListAltIcon fontSize="large" style={{ color: "#FB923C" }} />
             </Link>
           </div>
         </div>

@@ -6,6 +6,7 @@ import Navbar from "../Navbar";
 import axios from "axios";
 import { useRecoilState } from "recoil";
 import { userState } from "../../atoms/user";
+import SubgreddiitsPage from "../SubgreddiitsPage";
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -22,8 +23,10 @@ function Dashboard() {
     if (
       location.pathname !== "/dashboard" &&
       location.pathname !== "/dashboard/profile" &&
+      location.pathname !== "/dashboard/subgreddiits" &&
       location.pathname !== "/dashboard/" &&
-      location.pathname !== "/dashboard/profile/"
+      location.pathname !== "/dashboard/profile/" &&
+      location.pathname !== "/dashboard/subgreddiits/"
     )
       navigate("/notfound");
   }, [location, navigate]);
@@ -69,6 +72,7 @@ function Dashboard() {
       <Navbar />
       <Routes>
         <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/subgreddiits" element={<SubgreddiitsPage />} />
       </Routes>
     </div>
   );
