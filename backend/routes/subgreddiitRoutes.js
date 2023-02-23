@@ -8,6 +8,8 @@ router.post("/create", auth, subgreddiitController.createSubgreddiit);
 
 router.get("/notjoined", auth, subgreddiitController.getNotJoinedSubgreddiits);
 
+router.get("/sort/:sort_type", subgreddiitController.sortSubgreddiits);
+
 router.get("/:name", auth, subgreddiitController.getSubgreddiitByName);
 
 router.patch("/leave", auth, subgreddiitController.leaveSubgreddiits);

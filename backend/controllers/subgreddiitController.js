@@ -84,6 +84,36 @@ const getNotJoinedSubgreddiits = async (req, res) => {
   }
 };
 
+const sortSubgreddiits = async (req, res) => {
+  try {
+    const sort_type = req.params.sort_type;
+    // console.log("Hello hi");
+    // const user = await User.findById(req.user.id);
+    // console.log(typeof sort_type);
+    let subgreddiits;
+    if (sort_type === "name_asc") {
+      // console.log("213121");
+      subgreddiits = await Subgreddiit.find({}).sort({ name: 1 });
+    } else if (sort_type === "name_desc") {
+      subgreddiits = await Subgreddiit.find({}).sort({ name: -1 });
+    } else if (sort_type === "follow") {
+      subgreddiits = await Subgreddiit.find({}).sort({
+        followers_count: -1,
+      });
+    } else if (sort_type === "creation") {
+      subgreddiits = await Subgreddiit.find({}).sort({ createdAt: -1 });
+    } else {
+      return res.status(400).json({ msg: "Incorrect sorting type" });
+    }
+    // console.log("here");
+    // console.log(subgreddiits);
+    res.status(200).json(subgreddiits);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server error");
+  }
+};
+
 const leaveSubgreddiits = async (req, res) => {
   try {
     const temp_user = await User.findOne({
@@ -464,4 +494,5 @@ module.exports = {
   sendJoinRequest,
   acceptJoinRequest,
   rejectJoinRequest,
+  sortSubgreddiits,
 };

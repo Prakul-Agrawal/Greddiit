@@ -158,7 +158,8 @@ const get_user = async (req, res) => {
     const user = await User.findById(req.user.id)
       .populate("followers")
       .populate("following")
-      .populate("joined_subgreddiits");
+      .populate("joined_subgreddiits")
+      .populate("moderated_subgreddiits");
     user.password = undefined;
     res.status(200).json({ user });
   } catch (err) {
