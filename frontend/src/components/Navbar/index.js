@@ -1,10 +1,14 @@
 import LogoutIcon from "@mui/icons-material/Logout";
 import PersonIcon from "@mui/icons-material/Person";
 import { Link } from "react-router-dom";
+import { useRecoilState } from "recoil";
+import { userState } from "../../atoms/user";
 
 function Navbar() {
+  const [user, setUser] = useRecoilState(userState);
   const logout = () => {
     localStorage.removeItem("token");
+    setUser({});
   };
 
   return (
