@@ -136,6 +136,148 @@ const leaveSubgreddiits = async (req, res) => {
   }
 };
 
+const sendJoinRequest = async (req, res) => {
+  try {
+    const subgreddiit1 = await Subgreddiit.findOne({
+      _id: req.body.id,
+      followers: req.user.id,
+    });
+
+    if (subgreddiit1) {
+      return res.status(400).json({ msg: "Already following subgreddiit" });
+    }
+
+    const subgreddiit2 = await Subgreddiit.findOne({
+      _id: req.body.id,
+      join_requests: req.user.id,
+    });
+
+    if (subgreddiit2) {
+      return res
+        .status(400)
+        .json({ msg: "Previous join request is still pending" });
+    }
+
+    const subgreddiit3 = await Subgreddiit.findOne({
+      _id: req.body.id,
+      exited_users: req.user.id,
+    });
+
+    if (subgreddiit3) {
+      return res
+        .status(400)
+        .json({ msg: "Cannot join subgreddiit again after leaving it" });
+    }
+
+    await Subgreddiit.findOneAndUpdate(
+      { _id: req.body.id },
+      {
+        $push: { join_requests: req.user.id },
+      }
+    );
+
+    res.status(200).json("Sent join request");
+
+    // console.log(user);
+
+    // console.log(subgreddiits);
+    // res.status(200).json(subgreddiits);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server error");
+  }
+};
+
+const acceptJoinRequest = async (req, res) => {
+  try {
+    const temp_user = await User.findOne({
+      _id: req.user.id,
+      moderated_subgreddiits: req.body.id,
+    });
+
+    if (!temp_user) {
+      return res
+        .status(400)
+        .json({ msg: "Only Moderators can accept join requests" });
+    }
+
+    const subgreddiit = await Subgreddiit.findOne({
+      _id: req.body.id,
+      join_requests: req.body.user_id,
+    });
+
+    if (!subgreddiit) {
+      return res.status(400).json({ msg: "No such join request" });
+    }
+
+    await Subgreddiit.findOneAndUpdate(
+      { _id: req.body.id },
+      {
+        $pull: { join_requests: req.body.user_id },
+        $push: { followers: req.body.user_id },
+        $inc: { followers_count: 1 },
+      }
+    );
+
+    await User.findOneAndUpdate(
+      { _id: req.body.user_id },
+      {
+        $push: { joined_subgreddiits: req.body.id },
+      }
+    );
+
+    res.status(200).json("Join request accepted");
+
+    // console.log(user);
+
+    // console.log(subgreddiits);
+    // res.status(200).json(subgreddiits);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server error");
+  }
+};
+
+const rejectJoinRequest = async (req, res) => {
+  try {
+    const temp_user = await User.findOne({
+      _id: req.user.id,
+      moderated_subgreddiits: req.body.id,
+    });
+
+    if (!temp_user) {
+      return res
+        .status(400)
+        .json({ msg: "Only Moderators can reject join requests" });
+    }
+
+    const subgreddiit = await Subgreddiit.findOne({
+      _id: req.body.id,
+      join_requests: req.body.user_id,
+    });
+
+    if (!subgreddiit) {
+      return res.status(400).json({ msg: "No such join request" });
+    }
+
+    await Subgreddiit.findOneAndUpdate(
+      { _id: req.body.id },
+      {
+        $pull: { join_requests: req.body.user_id },
+      }
+    );
+
+    res.status(200).json("Join request rejected");
+
+    // console.log(user);
+
+    // console.log(subgreddiits);
+    // res.status(200).json(subgreddiits);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server error");
+  }
+};
 // const login_user = async (req, res) => {
 //   const { username, password } = req.body;
 //
@@ -319,4 +461,7 @@ module.exports = {
   getSubgreddiitByName,
   getNotJoinedSubgreddiits,
   leaveSubgreddiits,
+  sendJoinRequest,
+  acceptJoinRequest,
+  rejectJoinRequest,
 };
