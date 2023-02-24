@@ -12,9 +12,13 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import { useNavigate } from "react-router-dom";
+import { mySubgreddiitState } from "../../atoms/mySubgreddiit";
 
 function MySubgreddiitsPage() {
+  const navigate = useNavigate();
   const [user, setUser] = useRecoilState(userState);
+  const [mySubgreddiit, setMySubgreddiit] = useRecoilState(mySubgreddiitState);
   const [open, setOpen] = useState(false);
   const [subgreddiitData, setSubgreddiitData] = useState({
     name: "",
@@ -72,6 +76,31 @@ function MySubgreddiitsPage() {
     setOpen(false);
   };
 
+  const openSubgreddiit = async (sub_name) => {
+    const config = {
+      headers: {
+        "x-auth-token": localStorage.getItem("token"),
+      },
+    };
+    try {
+      const response = await axios.get(`/api/subgreddiit/${sub_name}`, config);
+      console.log(response.data);
+      setMySubgreddiit(response.data);
+      navigate("/dashboard/mysubgreddiits/moderated");
+    } catch (err) {
+      if (err.response) {
+        console.log(err.response.data);
+        console.log(err.response.status);
+        console.log(err.response.headers);
+        alert(err.response.data.msg);
+      } else if (err.request) {
+        console.log(err.request);
+      } else {
+        console.log(err.message);
+      }
+    }
+  };
+
   if (!user._id) {
     return (
       <div className="flex justify-center items-center text-8xl font-bold h-full">
@@ -103,7 +132,14 @@ function MySubgreddiitsPage() {
         </CardContent>
         <CardActions>
           <Button size="small">Delete Subgreddiit</Button>
-          <Button size="small">Open Subgreddiit</Button>
+          <Button
+            size="small"
+            onClick={() => {
+              openSubgreddiit(s.name);
+            }}
+          >
+            Open Subgreddiit
+          </Button>
         </CardActions>
       </Card>
     </div>
@@ -115,7 +151,7 @@ function MySubgreddiitsPage() {
         My Subgreddits Page
       </div>
       <div className="flex justify-center mb-7">
-        <Button variant="contained" onClick={handleClickOpen} sx>
+        <Button variant="contained" onClick={handleClickOpen}>
           Create New Subgreddiit
         </Button>
       </div>

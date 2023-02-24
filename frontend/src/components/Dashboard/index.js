@@ -8,12 +8,15 @@ import { useRecoilState } from "recoil";
 import { userState } from "../../atoms/user";
 import SubgreddiitsPage from "../SubgreddiitsPage";
 import MySubgreddiitsPage from "../MySubgreddiitsPage";
+import { mySubgreddiitState } from "../../atoms/mySubgreddiit";
+import ModeratedPage from "../ModeratedPage";
 
 function Dashboard() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const location = useLocation();
   const [user, setUser] = useRecoilState(userState);
+  const [mySubgreddiit, setMySubgreddiit] = useRecoilState(mySubgreddiitState);
 
   useEffect(() => {
     if (!localStorage.getItem("token")) navigate("/");
@@ -25,11 +28,13 @@ function Dashboard() {
       location.pathname !== "/dashboard" &&
       location.pathname !== "/dashboard/profile" &&
       location.pathname !== "/dashboard/subgreddiits" &&
-      location.pathname !== "/dashboard/mysubgreddiits" &&
+      location.pathname !== "/dashboard/mysubgreddiits/home" &&
+      location.pathname !== "/dashboard/mysubgreddiits/moderated" &&
       location.pathname !== "/dashboard/" &&
       location.pathname !== "/dashboard/profile/" &&
       location.pathname !== "/dashboard/subgreddiits/" &&
-      location.pathname !== "/dashboard/mysubgreddiits/"
+      location.pathname !== "/dashboard/mysubgreddiits/home/" &&
+      location.pathname !== "/dashboard/mysubgreddiits/moderated/"
     )
       navigate("/notfound");
   }, [location, navigate]);
@@ -61,6 +66,7 @@ function Dashboard() {
       }
     };
     getUser();
+    setMySubgreddiit({});
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -76,7 +82,8 @@ function Dashboard() {
       <Routes>
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/subgreddiits" element={<SubgreddiitsPage />} />
-        <Route path="/mysubgreddiits" element={<MySubgreddiitsPage />} />
+        <Route path="/mysubgreddiits/home" element={<MySubgreddiitsPage />} />
+        <Route path="/mysubgreddiits/moderated" element={<ModeratedPage />} />
       </Routes>
     </div>
   );
