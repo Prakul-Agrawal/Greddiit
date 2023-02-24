@@ -84,7 +84,7 @@ function MySubgreddiitsPage() {
     };
     try {
       const response = await axios.get(`/api/subgreddiit/${sub_name}`, config);
-      console.log(response.data);
+      // console.log(response.data);
       setMySubgreddiit(response.data);
       navigate("/dashboard/mysubgreddiits/moderated");
     } catch (err) {
@@ -205,7 +205,7 @@ function MySubgreddiitsPage() {
           <Button onClick={create}>Create</Button>
         </DialogActions>
       </Dialog>
-      <div className="flex flex-col">{moderatedSubgreddiits}</div>
+      <div className="flex flex-col bg-orange-600">{moderatedSubgreddiits}</div>
     </>
   );
 }

@@ -311,9 +311,9 @@ function SubgreddiitsPage() {
         </Button>
       </div>
       {isSorted ? (
-        <div className="flex flex-col">{sortedSubgreddiits}</div>
+        <div className="flex flex-col bg-orange-600">{sortedSubgreddiits}</div>
       ) : (
-        <div className="flex flex-col">
+        <div className="flex flex-col bg-orange-600">
           {joinedSubgreddiits}
           {notJoinedSubgreddiits}
         </div>

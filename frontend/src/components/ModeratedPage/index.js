@@ -174,14 +174,18 @@ function ModeratedPage() {
             <div className="flex justify-center text-4xl font-bold mb-2">
               Users
             </div>
+            <div className="flex flex-col bg-orange-600">
             {subgreddiitUsers}
+            </div>
           </div>
         ) : displayOption === 2 ? (
           <div>
             <div className="flex justify-center text-4xl font-bold mb-2">
               Join Requests
             </div>
+            <div className="flex flex-col bg-orange-600">
             {subgreddiitRequests}
+            </div>
           </div>
         ) : displayOption === 3 ? (
           <div>
