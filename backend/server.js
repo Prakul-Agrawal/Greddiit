@@ -16,9 +16,9 @@ mongoose
 // server.use(express.static("public"));
 // server.use(express.urlencoded({ extended: true }));
 
-server.use("/api/user", userRoutes);
+server.use("/user", userRoutes);
 
-server.use("/api/subgreddiit", subgreddiitRoutes);
+server.use("/subgreddiit", subgreddiitRoutes);
 
 server.get("/", (req, res) => {
   res.send("<p>Home Page</p>");
