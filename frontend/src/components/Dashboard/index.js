@@ -10,6 +10,7 @@ import SubgreddiitsPage from "../SubgreddiitsPage";
 import MySubgreddiitsPage from "../MySubgreddiitsPage";
 import { mySubgreddiitState } from "../../atoms/mySubgreddiit";
 import ModeratedPage from "../ModeratedPage";
+import PostsPage from "../PostsPage";
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -27,12 +28,14 @@ function Dashboard() {
     if (
       location.pathname !== "/dashboard" &&
       location.pathname !== "/dashboard/profile" &&
-      location.pathname !== "/dashboard/subgreddiits" &&
+      location.pathname !== "/dashboard/subgreddiits/home" &&
+      location.pathname !== "/dashboard/subgreddiits/specific" &&
       location.pathname !== "/dashboard/mysubgreddiits/home" &&
       location.pathname !== "/dashboard/mysubgreddiits/moderated" &&
       location.pathname !== "/dashboard/" &&
       location.pathname !== "/dashboard/profile/" &&
-      location.pathname !== "/dashboard/subgreddiits/" &&
+      location.pathname !== "/dashboard/mysubgreddiits/home/" &&
+      location.pathname !== "/dashboard/mysubgreddiits/specific/" &&
       location.pathname !== "/dashboard/mysubgreddiits/home/" &&
       location.pathname !== "/dashboard/mysubgreddiits/moderated/"
     )
@@ -81,7 +84,8 @@ function Dashboard() {
       <Navbar />
       <Routes>
         <Route path="/profile" element={<ProfilePage />} />
-        <Route path="/subgreddiits" element={<SubgreddiitsPage />} />
+        <Route path="/subgreddiits/home" element={<SubgreddiitsPage />} />
+        <Route path="/subgreddiits/specific" element={<PostsPage />} />
         <Route path="/mysubgreddiits/home" element={<MySubgreddiitsPage />} />
         <Route path="/mysubgreddiits/moderated" element={<ModeratedPage />} />
       </Routes>

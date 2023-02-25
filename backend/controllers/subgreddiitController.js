@@ -55,11 +55,10 @@ const createSubgreddiit = async (req, res) => {
 const getSubgreddiitByName = async (req, res) => {
   try {
     const name = req.params.name;
-    // uncomment after implementing posts
-    // const subgreddiit = await Subgreddiit.findOne({ name }).populate("posts");
     const subgreddiit = await Subgreddiit.findOne({ name })
       .populate("followers")
-      .populate("join_requests");
+      .populate("join_requests")
+      .populate("posts");
     if (!subgreddiit) {
       return res.status(404).json({ msg: "Subgreddiit does not exist" });
     }

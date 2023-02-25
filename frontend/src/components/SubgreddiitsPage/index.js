@@ -8,11 +8,15 @@ import Button from "@mui/material/Button";
 import axios from "axios";
 import { Input } from "@mui/material";
 import Fuse from "fuse.js";
+import { subgreddiitState } from "../../atoms/subgreddiit";
+import { useNavigate } from "react-router-dom";
 
 const ariaLabel = { "aria-label": "description" };
 
 function SubgreddiitsPage() {
+  const navigate = useNavigate();
   const [user, setUser] = useRecoilState(userState);
+  const [subgreddiit, setSubgreddiit] = useRecoilState(subgreddiitState);
   const [notJoined, setNotJoined] = useState([]);
   const [sorted, setSorted] = useState([]);
   const [isSorted, setIsSorted] = useState(false);
@@ -168,6 +172,31 @@ function SubgreddiitsPage() {
     joinSubgreddiit();
   };
 
+  const openSubgreddiit = async (sub_name) => {
+    const config = {
+      headers: {
+        "x-auth-token": localStorage.getItem("token"),
+      },
+    };
+    try {
+      const response = await axios.get(`/api/subgreddiit/${sub_name}`, config);
+      // console.log(response.data);
+      setSubgreddiit(response.data);
+      navigate("/dashboard/subgreddiits/specific");
+    } catch (err) {
+      if (err.response) {
+        console.log(err.response.data);
+        console.log(err.response.status);
+        console.log(err.response.headers);
+        alert(err.response.data.msg);
+      } else if (err.request) {
+        console.log(err.request);
+      } else {
+        console.log(err.message);
+      }
+    }
+  };
+
   if (!user._id) {
     return (
       <div className="flex justify-center items-center text-8xl font-bold h-full">
@@ -252,6 +281,14 @@ function SubgreddiitsPage() {
                   Leave Subgreddiit
                 </Button>
               )}
+              <Button
+                size="small"
+                onClick={() => {
+                  openSubgreddiit(s.name);
+                }}
+              >
+                Open Subgreddiit
+              </Button>
             </CardActions>
           </Card>
         </div>
@@ -361,6 +398,16 @@ function SubgreddiitsPage() {
                   }}
                 >
                   Send Join Request
+                </Button>
+              )}
+              {s.followers.includes(user._id) && (
+                <Button
+                  size="small"
+                  onClick={() => {
+                    openSubgreddiit(s.name);
+                  }}
+                >
+                  Open Subgreddiit
                 </Button>
               )}
             </CardActions>

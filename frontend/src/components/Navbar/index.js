@@ -1,11 +1,11 @@
 import LogoutIcon from "@mui/icons-material/Logout";
 import PersonIcon from "@mui/icons-material/Person";
 import ListAltIcon from "@mui/icons-material/ListAlt";
-import TextureIcon from '@mui/icons-material/Texture';
+import TextureIcon from "@mui/icons-material/Texture";
 import { Link } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { userState } from "../../atoms/user";
-import {mySubgreddiitState} from "../../atoms/mySubgreddiit";
+import { mySubgreddiitState } from "../../atoms/mySubgreddiit";
 
 function Navbar() {
   const [user, setUser] = useRecoilState(userState);
@@ -29,7 +29,7 @@ function Navbar() {
         </div>
         <div className="flex justify-center bg-black w-1/4">
           <div className="text-orange-400">
-            <Link to={"/dashboard/subgreddiits"}>
+            <Link to={"/dashboard/subgreddiits/home"}>
               Subgreddiits
               <ListAltIcon fontSize="large" style={{ color: "#FB923C" }} />
             </Link>
