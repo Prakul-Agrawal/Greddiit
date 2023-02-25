@@ -2,7 +2,8 @@ const express = require("express");
 const mongoose = require("mongoose").default;
 const userRoutes = require("./routes/userRoutes");
 const subgreddiitRoutes = require("./routes/subgreddiitRoutes");
-require('dotenv').config();
+const postRoutes = require("./routes/postRoutes");
+require("dotenv").config();
 
 const server = express();
 server.use(express.json());
@@ -19,6 +20,8 @@ mongoose
 server.use("/api/user", userRoutes);
 
 server.use("/api/subgreddiit", subgreddiitRoutes);
+
+server.use("/api/post", postRoutes);
 
 server.get("/", (req, res) => {
   res.send("<p>Home Page</p>");
