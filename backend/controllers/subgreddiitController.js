@@ -70,6 +70,21 @@ const getSubgreddiitByName = async (req, res) => {
   }
 };
 
+// const getAllSubgreddiits = async (req, res) => {
+//   try {
+//     const subgreddiits = await Subgreddiit.find({})
+//         .populate("followers")
+//         .populate("join_requests");
+//     // if (!subgreddiit) {
+//     //   return res.status(404).json({ msg: "Subgreddiit does not exist" });
+//     // }
+//     res.status(200).json(subgreddiits);
+//   } catch (err) {
+//     console.error(err.message);
+//     res.status(500).send("Server error");
+//   }
+// };
+
 const getNotJoinedSubgreddiits = async (req, res) => {
   try {
     // console.log("Hello hi");
@@ -314,6 +329,7 @@ const rejectJoinRequest = async (req, res) => {
 module.exports = {
   createSubgreddiit,
   getSubgreddiitByName,
+  getAllSubgreddiits,
   getNotJoinedSubgreddiits,
   leaveSubgreddiits,
   sendJoinRequest,

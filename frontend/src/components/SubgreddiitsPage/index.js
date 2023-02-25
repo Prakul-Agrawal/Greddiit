@@ -6,12 +6,47 @@ import { userState } from "../../atoms/user";
 import { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
 import axios from "axios";
+import { Input } from "@mui/material";
+import Fuse from "fuse.js";
+
+const ariaLabel = { "aria-label": "description" };
 
 function SubgreddiitsPage() {
   const [user, setUser] = useRecoilState(userState);
   const [notJoined, setNotJoined] = useState([]);
   const [sorted, setSorted] = useState([]);
   const [isSorted, setIsSorted] = useState(false);
+  // const [allSubgreddiits, setAllSubgreddiits] = useState([]);
+  const [currentName, setCurrentName] = useState("");
+  // const [joinedArray, setJoinedArray] = useState([]);
+  //
+  // useEffect(() => {
+  //   const getSubgreddiits = async () => {
+  //     try {
+  //       const response = await axios.get("/api/subgreddiit/all");
+  //       setAllSubgreddiits(response.data);
+  //       console.log("All Subgreddiits")
+  //       console.log(response.data);
+  //     } catch (err) {
+  //       if (err.response) {
+  //         console.log(err.response.data);
+  //         console.log(err.response.status);
+  //         console.log(err.response.headers);
+  //       } else if (err.request) {
+  //         console.log(err.request);
+  //       } else {
+  //         console.log(err.message);
+  //       }
+  //     }
+  //   };
+  //   getSubgreddiits();
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
+
+  const nameChange = (c) => {
+    setCurrentName(c.target.value);
+    // console.log(currentName);
+  };
 
   const getNotJoined = async () => {
     const config = {
@@ -132,7 +167,43 @@ function SubgreddiitsPage() {
     );
   }
 
-  const joinedSubgreddiits = user.joined_subgreddiits.map((s) => (
+  // const getLimitedJoined = (c) => {
+  //   console.log("Inside getLimitedJoined");
+  //   console.log(c.target.value);
+  //   let tempJoinedArray = [];
+  //   let len = user.joined_subgreddiits.length;
+  //   for (let i = 0; i < len; i++) {
+  //     if (user.joined_subgreddiits[i].name.includes(c.target.value)) {
+  //       tempJoinedArray.push(user.joined_subgreddiits[i]);
+  //     }
+  //   }
+  //   setJoinedArray(tempJoinedArray);
+  //   // console.log("Array");
+  //   // console.log(joinedArray);
+  // };
+
+  const options = {
+    includeScore: true,
+    keys: ["name"],
+  };
+  const joinedFuse = new Fuse(user.joined_subgreddiits, options);
+
+  const joinedResult = currentName
+    ? joinedFuse.search(currentName).map((e) => e.item)
+    : user.joined_subgreddiits;
+
+  const notJoinedFuse = new Fuse(notJoined, options);
+
+  const notJoinedResult = currentName
+    ? notJoinedFuse.search(currentName).map((e) => e.item)
+    : notJoined;
+
+  // console.log("Fuzzy Search");
+  // console.log(result);
+  // console.log(typeof result);
+  // console.log("This", result[0]);
+
+  const joinedSubgreddiits = joinedResult.map((s) => (
     <div key={s._id} className="mb-3">
       <Card sx={{ maxWidth: "50vw", margin: "auto" }}>
         <CardContent>
@@ -173,7 +244,7 @@ function SubgreddiitsPage() {
     </div>
   ));
 
-  const notJoinedSubgreddiits = notJoined.map((s) => (
+  const notJoinedSubgreddiits = notJoinedResult.map((s) => (
     <div key={s._id} className="mb-3">
       <Card sx={{ maxWidth: "50vw", margin: "auto" }}>
         <CardContent>
@@ -258,10 +329,34 @@ function SubgreddiitsPage() {
     </div>
   ));
 
+  // console.log("Hererererer");
+  // console.log(user.joined_subgreddiits);
+
   return (
     <>
       <div className="flex mx-auto text-7xl font-extrabold text-white m-5">
         Subgreddits Page
+      </div>
+      <div className="flex justify-center mb-3">
+        <div className="bg-white rounded-lg m-1 w-1/4">
+          {/*<TextField margin="dense" id="lname" label="Last Name" sx={{ width: 1 }} />*/}
+          <Input
+            placeholder="  Search for Subgreddiits by Name"
+            id="nameFilter"
+            inputProps={ariaLabel}
+            sx={{ width: 1, height: 30 }}
+            onChange={nameChange}
+          />
+        </div>
+      </div>
+      <div className="flex justify-center mb-3">
+        <div className="bg-white rounded-lg m-1 w-1/4">
+          <Input
+            placeholder="  Filter by Tags (Space Separated)"
+            inputProps={ariaLabel}
+            sx={{ width: 1, height: 30 }}
+          />
+        </div>
       </div>
       <div className="flex justify-center mb-7">
         <Button
@@ -314,7 +409,11 @@ function SubgreddiitsPage() {
         <div className="flex flex-col bg-orange-600">{sortedSubgreddiits}</div>
       ) : (
         <div className="flex flex-col bg-orange-600">
+          {/*{console.log("Why not this")}*/}
+          {/*{console.log(joinedSubgreddiits)}*/}
           {joinedSubgreddiits}
+          {/*{console.log("Currently here")}*/}
+          {/*{console.log(notJoinedSubgreddiits)}*/}
           {notJoinedSubgreddiits}
         </div>
       )}
