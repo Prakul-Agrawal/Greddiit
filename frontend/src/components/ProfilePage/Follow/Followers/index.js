@@ -54,7 +54,7 @@ function Followers() {
   };
 
   const followerList = user.followers.map((u) => (
-    <Box display="grid">
+    <Box key={u._id} display="grid">
       <MenuItem onClick={handleClose}>
         <div className="mr-2">
           <Avatar />

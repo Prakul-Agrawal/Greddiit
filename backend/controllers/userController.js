@@ -287,6 +287,14 @@ const follow = async (req, res) => {
       }
     );
 
+    await User.findOneAndUpdate(
+        { _id: req.body.id },
+        {
+          $push: { followers: req.user.id },
+          $inc: { followers_count: 1 },
+        }
+    );
+
     res.status(200).json("Followed user");
   } catch (err) {
     console.error(err.message);
