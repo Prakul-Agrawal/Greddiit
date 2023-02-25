@@ -18,6 +18,7 @@ function SubgreddiitsPage() {
   const [isSorted, setIsSorted] = useState(false);
   // const [allSubgreddiits, setAllSubgreddiits] = useState([]);
   const [currentName, setCurrentName] = useState("");
+  const [currentTags, setCurrentTags] = useState([]);
   // const [joinedArray, setJoinedArray] = useState([]);
   //
   // useEffect(() => {
@@ -45,6 +46,13 @@ function SubgreddiitsPage() {
 
   const nameChange = (c) => {
     setCurrentName(c.target.value);
+    // console.log(currentName);
+  };
+
+  const tagsChange = (c) => {
+    const split_tags = c.target.value.split(" ");
+    const lower_tags = split_tags.map((word) => word.toLowerCase());
+    setCurrentTags(lower_tags);
     // console.log(currentName);
   };
 
@@ -92,6 +100,7 @@ function SubgreddiitsPage() {
 
   useEffect(() => {
     getNotJoined();
+    // console.log(user);
   }, []);
 
   const leave = (subgreddiitID) => {
@@ -198,136 +207,170 @@ function SubgreddiitsPage() {
     ? notJoinedFuse.search(currentName).map((e) => e.item)
     : notJoined;
 
-  // console.log("Fuzzy Search");
-  // console.log(result);
-  // console.log(typeof result);
-  // console.log("This", result[0]);
+  const joinedSubgreddiits = joinedResult.map((s) => {
+    let flag = 0;
+    for (let i = 0; i < currentTags.length; i++) {
+      if (s.tags.includes(currentTags[i])) {
+        flag = 1;
+        break;
+      }
+    }
+    if (flag === 1 || currentTags.length === 0 || currentTags[0] === "") {
+      return (
+        <div key={s._id} className="mb-3">
+          <Card sx={{ maxWidth: "50vw", margin: "auto" }}>
+            <CardContent>
+              <div className="text-center text-2xl">{s.name}</div>
+              <div className="text-center mb-3">{s.description}</div>
+              <div className="flex mb-3">
+                <div className="w-1/2 text-center">
+                  Number of Followers: {s.followers_count}
+                </div>
+                <div className="w-1/2 text-center">
+                  Number of Posts: {s.posts_count}
+                </div>
+              </div>
+              <div className="text-center mb-2">
+                Tags: {s.tags.map((x) => x + " ")}
+              </div>
+              <div className="text-center">
+                Banned Words: {s.banned.map((x) => x + " ")}
+              </div>
+            </CardContent>
+            <CardActions>
+              {s.moderator === user._id ? (
+                <Button size="small" disabled>
+                  Leave Subgreddiit
+                </Button>
+              ) : (
+                <Button
+                  size="small"
+                  onClick={() => {
+                    leave(s._id);
+                  }}
+                >
+                  Leave Subgreddiit
+                </Button>
+              )}
+            </CardActions>
+          </Card>
+        </div>
+      );
+    } else {
+      return <div key={s._id}></div>;
+    }
+  });
 
-  const joinedSubgreddiits = joinedResult.map((s) => (
-    <div key={s._id} className="mb-3">
-      <Card sx={{ maxWidth: "50vw", margin: "auto" }}>
-        <CardContent>
-          <div className="text-center text-2xl">{s.name}</div>
-          <div className="text-center mb-3">{s.description}</div>
-          <div className="flex mb-3">
-            <div className="w-1/2 text-center">
-              Number of Followers: {s.followers_count}
-            </div>
-            <div className="w-1/2 text-center">
-              Number of Posts: {s.posts_count}
-            </div>
-          </div>
-          <div className="text-center mb-2">
-            Tags: {s.tags.map((x) => x + " ")}
-          </div>
-          <div className="text-center">
-            Banned Words: {s.banned.map((x) => x + " ")}
-          </div>
-        </CardContent>
-        <CardActions>
-          {s.moderator === user._id ? (
-            <Button size="small" disabled>
-              Leave Subgreddiit
-            </Button>
-          ) : (
-            <Button
-              size="small"
-              onClick={() => {
-                leave(s._id);
-              }}
-            >
-              Leave Subgreddiit
-            </Button>
-          )}
-        </CardActions>
-      </Card>
-    </div>
-  ));
+  const notJoinedSubgreddiits = notJoinedResult.map((s) => {
+    let flag = 0;
+    for (let i = 0; i < currentTags.length; i++) {
+      if (s.tags.includes(currentTags[i])) {
+        flag = 1;
+        break;
+      }
+    }
+    if (flag === 1 || currentTags.length === 0 || currentTags[0] === "") {
+      return (
+        <div key={s._id} className="mb-3">
+          <Card sx={{ maxWidth: "50vw", margin: "auto" }}>
+            <CardContent>
+              <div className="text-center text-2xl">{s.name}</div>
+              <div className="text-center mb-3">{s.description}</div>
+              <div className="flex mb-3">
+                <div className="w-1/2 text-center">
+                  Number of Followers: {s.followers_count}
+                </div>
+                <div className="w-1/2 text-center">
+                  Number of Posts: {s.posts_count}
+                </div>
+              </div>
+              <div className="text-center mb-2">
+                Tags: {s.tags.map((x) => x + " ")}
+              </div>
+              <div className="text-center">
+                Banned Words: {s.banned.map((x) => x + " ")}
+              </div>
+            </CardContent>
+            <CardActions>
+              <Button
+                size="small"
+                onClick={() => {
+                  sendRequest(s._id);
+                }}
+              >
+                Send Join Request
+              </Button>
+            </CardActions>
+          </Card>
+        </div>
+      );
+    } else {
+      return <div key={s._id}></div>;
+    }
+  });
 
-  const notJoinedSubgreddiits = notJoinedResult.map((s) => (
-    <div key={s._id} className="mb-3">
-      <Card sx={{ maxWidth: "50vw", margin: "auto" }}>
-        <CardContent>
-          <div className="text-center text-2xl">{s.name}</div>
-          <div className="text-center mb-3">{s.description}</div>
-          <div className="flex mb-3">
-            <div className="w-1/2 text-center">
-              Number of Followers: {s.followers_count}
-            </div>
-            <div className="w-1/2 text-center">
-              Number of Posts: {s.posts_count}
-            </div>
-          </div>
-          <div className="text-center mb-2">
-            Tags: {s.tags.map((x) => x + " ")}
-          </div>
-          <div className="text-center">
-            Banned Words: {s.banned.map((x) => x + " ")}
-          </div>
-        </CardContent>
-        <CardActions>
-          <Button
-            size="small"
-            onClick={() => {
-              sendRequest(s._id);
-            }}
-          >
-            Send Join Request
-          </Button>
-        </CardActions>
-      </Card>
-    </div>
-  ));
-
-  const sortedSubgreddiits = sorted.map((s) => (
-    <div key={s._id} className="mb-3">
-      <Card sx={{ maxWidth: "50vw", margin: "auto" }}>
-        <CardContent>
-          <div className="text-center text-2xl">{s.name}</div>
-          <div className="text-center mb-3">{s.description}</div>
-          <div className="flex mb-3">
-            <div className="w-1/2 text-center">
-              Number of Followers: {s.followers_count}
-            </div>
-            <div className="w-1/2 text-center">
-              Number of Posts: {s.posts_count}
-            </div>
-          </div>
-          <div className="text-center mb-2">
-            Tags: {s.tags.map((x) => x + " ")}
-          </div>
-          <div className="text-center">
-            Banned Words: {s.banned.map((x) => x + " ")}
-          </div>
-        </CardContent>
-        <CardActions>
-          {s.moderator === user._id ? (
-            <Button size="small" disabled>
-              Leave Subgreddiit
-            </Button>
-          ) : s.followers.includes(user._id) ? (
-            <Button
-              size="small"
-              onClick={() => {
-                leave(s._id);
-              }}
-            >
-              Leave Subgreddiit
-            </Button>
-          ) : (
-            <Button
-              size="small"
-              onClick={() => {
-                sendRequest(s._id);
-              }}
-            >
-              Send Join Request
-            </Button>
-          )}
-        </CardActions>
-      </Card>
-    </div>
-  ));
+  const sortedSubgreddiits = sorted.map((s) => {
+    let flag = 0;
+    for (let i = 0; i < currentTags.length; i++) {
+      if (s.tags.includes(currentTags[i])) {
+        flag = 1;
+        break;
+      }
+    }
+    if (flag === 1 || currentTags.length === 0 || currentTags[0] === "") {
+      return (
+        <div key={s._id} className="mb-3">
+          <Card sx={{ maxWidth: "50vw", margin: "auto" }}>
+            <CardContent>
+              <div className="text-center text-2xl">{s.name}</div>
+              <div className="text-center mb-3">{s.description}</div>
+              <div className="flex mb-3">
+                <div className="w-1/2 text-center">
+                  Number of Followers: {s.followers_count}
+                </div>
+                <div className="w-1/2 text-center">
+                  Number of Posts: {s.posts_count}
+                </div>
+              </div>
+              <div className="text-center mb-2">
+                Tags: {s.tags.map((x) => x + " ")}
+              </div>
+              <div className="text-center">
+                Banned Words: {s.banned.map((x) => x + " ")}
+              </div>
+            </CardContent>
+            <CardActions>
+              {s.moderator === user._id ? (
+                <Button size="small" disabled>
+                  Leave Subgreddiit
+                </Button>
+              ) : s.followers.includes(user._id) ? (
+                <Button
+                  size="small"
+                  onClick={() => {
+                    leave(s._id);
+                  }}
+                >
+                  Leave Subgreddiit
+                </Button>
+              ) : (
+                <Button
+                  size="small"
+                  onClick={() => {
+                    sendRequest(s._id);
+                  }}
+                >
+                  Send Join Request
+                </Button>
+              )}
+            </CardActions>
+          </Card>
+        </div>
+      );
+    } else {
+      return <div key={s._id}></div>;
+    }
+  });
 
   // console.log("Hererererer");
   // console.log(user.joined_subgreddiits);
@@ -339,7 +382,6 @@ function SubgreddiitsPage() {
       </div>
       <div className="flex justify-center mb-3">
         <div className="bg-white rounded-lg m-1 w-1/4">
-          {/*<TextField margin="dense" id="lname" label="Last Name" sx={{ width: 1 }} />*/}
           <Input
             placeholder="  Search for Subgreddiits by Name"
             id="nameFilter"
@@ -353,8 +395,10 @@ function SubgreddiitsPage() {
         <div className="bg-white rounded-lg m-1 w-1/4">
           <Input
             placeholder="  Filter by Tags (Space Separated)"
+            id="tagFilter"
             inputProps={ariaLabel}
             sx={{ width: 1, height: 30 }}
+            onChange={tagsChange}
           />
         </div>
       </div>

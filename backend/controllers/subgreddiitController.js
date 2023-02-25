@@ -329,7 +329,7 @@ const rejectJoinRequest = async (req, res) => {
 module.exports = {
   createSubgreddiit,
   getSubgreddiitByName,
-  getAllSubgreddiits,
+  // getAllSubgreddiits,
   getNotJoinedSubgreddiits,
   leaveSubgreddiits,
   sendJoinRequest,
