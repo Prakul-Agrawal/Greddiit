@@ -11,6 +11,7 @@ import MySubgreddiitsPage from "../MySubgreddiitsPage";
 import { mySubgreddiitState } from "../../atoms/mySubgreddiit";
 import ModeratedPage from "../ModeratedPage";
 import PostsPage from "../PostsPage";
+import SavedPostsPage from "../SavedPostsPage";
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -32,12 +33,14 @@ function Dashboard() {
       location.pathname !== "/dashboard/subgreddiits/specific" &&
       location.pathname !== "/dashboard/mysubgreddiits/home" &&
       location.pathname !== "/dashboard/mysubgreddiits/moderated" &&
+      location.pathname !== "/dashboard/saved" &&
       location.pathname !== "/dashboard/" &&
       location.pathname !== "/dashboard/profile/" &&
       location.pathname !== "/dashboard/mysubgreddiits/home/" &&
       location.pathname !== "/dashboard/mysubgreddiits/specific/" &&
       location.pathname !== "/dashboard/mysubgreddiits/home/" &&
-      location.pathname !== "/dashboard/mysubgreddiits/moderated/"
+      location.pathname !== "/dashboard/mysubgreddiits/moderated/" &&
+      location.pathname !== "/dashboard/saved/"
     )
       navigate("/notfound");
   }, [location, navigate]);
@@ -88,6 +91,7 @@ function Dashboard() {
         <Route path="/subgreddiits/specific" element={<PostsPage />} />
         <Route path="/mysubgreddiits/home" element={<MySubgreddiitsPage />} />
         <Route path="/mysubgreddiits/moderated" element={<ModeratedPage />} />
+        <Route path="/saved" element={<SavedPostsPage />} />
       </Routes>
     </div>
   );

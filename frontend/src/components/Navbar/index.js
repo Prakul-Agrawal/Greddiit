@@ -2,6 +2,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import PersonIcon from "@mui/icons-material/Person";
 import ListAltIcon from "@mui/icons-material/ListAlt";
 import TextureIcon from "@mui/icons-material/Texture";
+import BookmarksIcon from '@mui/icons-material/Bookmarks';
 import { Link } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { userState } from "../../atoms/user";
@@ -19,7 +20,7 @@ function Navbar() {
   return (
     <nav>
       <div className="flex">
-        <div className="flex justify-center bg-black w-1/4">
+        <div className="flex justify-center bg-black w-1/5">
           <div className="text-orange-400">
             <Link to={"/dashboard/profile"}>
               Profile
@@ -27,7 +28,7 @@ function Navbar() {
             </Link>
           </div>
         </div>
-        <div className="flex justify-center bg-black w-1/4">
+        <div className="flex justify-center bg-black w-1/5">
           <div className="text-orange-400">
             <Link to={"/dashboard/subgreddiits/home"}>
               Subgreddiits
@@ -35,7 +36,7 @@ function Navbar() {
             </Link>
           </div>
         </div>
-        <div className="flex justify-center bg-black w-1/4">
+        <div className="flex justify-center bg-black w-1/5">
           <div className="text-orange-400">
             <Link to={"/dashboard/mysubgreddiits/home"}>
               My Subgreddiits
@@ -43,7 +44,15 @@ function Navbar() {
             </Link>
           </div>
         </div>
-        <div className="flex justify-center bg-black w-1/4">
+        <div className="flex justify-center bg-black w-1/5">
+          <div className="text-orange-400">
+            <Link to={"/dashboard/saved"}>
+              Saved Posts
+              <BookmarksIcon fontSize="large" style={{ color: "#FB923C" }} />
+            </Link>
+          </div>
+        </div>
+        <div className="flex justify-center bg-black w-1/5">
           <div className="text-orange-400" onClick={logout}>
             <Link to={"/"}>
               Logout
