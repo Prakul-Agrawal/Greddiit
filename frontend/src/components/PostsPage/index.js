@@ -169,8 +169,12 @@ function PostsPage() {
     <div key={u._id} className="mb-3">
       <Card sx={{ maxWidth: "50vw", margin: "auto" }}>
         <CardContent>
-          <div className="text-center mb-2">{u.text}</div>
-          <div className="text-center mb-2">- {u.posted_by_name}</div>
+          <div className="text-center mb-6">{u.text}</div>
+          <div className="text-center mb-3">Posted by: {u.posted_by_name}</div>
+          <div className="flex justify-center">
+            <div className="text-center w-1/2">Upvotes: {u.upvotes}</div>
+            <div className="text-center w-1/2">Downvotes: {u.downvotes}</div>
+          </div>
         </CardContent>
         <CardActions>
           <Button
