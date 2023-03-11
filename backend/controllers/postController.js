@@ -21,14 +21,46 @@ const createPost = async (req, res) => {
       });
     }
 
+    console.log(temp_subgreddiit.banned);
+
+    let containsBannedWords = false,
+      substring = "",
+      substringLen = 0,
+      index = 0,
+      startIndex = 0,
+      indices = [];
+    const lowercaseText = text.toLowerCase();
+
+    for (let i = 0; i < temp_subgreddiit.banned.length; ++i) {
+      substring = temp_subgreddiit.banned[i];
+      substringLen = substring.length;
+      if (lowercaseText.includes(substring)) {
+        containsBannedWords = true;
+        startIndex = 0;
+        while ((index = lowercaseText.indexOf(substring, startIndex)) > -1) {
+          indices.push([index, substringLen]);
+          startIndex = index + substringLen;
+        }
+      }
+    }
+
+    let tempStr = text;
+
+    if (containsBannedWords) {
+      for (let i = 0; i < indices.length; ++i) {
+        tempStr =
+          tempStr.substring(0, indices[i][0]) +
+          "*".repeat(indices[i][1]) +
+          tempStr.substring(indices[i][0] + indices[i][1], tempStr.length);
+      }
+    }
+
     const post = new Post({
-      text,
+      text: tempStr,
       posted_by_id,
       posted_by_name,
       posted_in,
     });
-
-    console.log(post);
 
     await Subgreddiit.findOneAndUpdate(
       { _id: posted_in },
@@ -45,11 +77,11 @@ const createPost = async (req, res) => {
       }
     );
 
-    // console.log("1234");
-
     await post.save();
 
-    // console.log("hello");
+    if (containsBannedWords) {
+      return res.status(200).send("Post created, however it contains banned words");
+    }
     res.status(200).send("Post created");
   } catch (err) {
     console.error(err.message);

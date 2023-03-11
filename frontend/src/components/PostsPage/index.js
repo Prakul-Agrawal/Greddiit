@@ -60,6 +60,20 @@ function PostsPage() {
         );
         // console.log(response.data);
         setSubgreddiit(response2.data);
+        let substring = "";
+        const lowercaseText = textData.toLowerCase();
+        console.log("12345");
+        console.log(subgreddiit.banned);
+        for (let i = 0; i < subgreddiit.banned.length; ++i) {
+          console.log(subgreddiit.banned.length);
+          substring = subgreddiit.banned[i];
+          console.log(substring)
+          console.log("Reached here");
+          if (lowercaseText.includes(substring)) {
+            alert("Your post has banned words! They will be censored");
+            break;
+          }
+        }
       } catch (err) {
         if (err.response) {
           console.log(err.response.data);
