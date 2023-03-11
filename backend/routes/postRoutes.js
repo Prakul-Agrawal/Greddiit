@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.post("/create", auth, postController.createPost);
 //
-// router.get("/notjoined", auth, subgreddiitController.getNotJoinedSubgreddiits);
+router.get("/saved", auth, postController.getSavedPosts);
 //
 // router.get("/sort/:sort_type", subgreddiitController.sortSubgreddiits);
 //

@@ -325,6 +325,19 @@ const removeSavedPost = async (req, res) => {
   }
 };
 
+const getSavedPosts = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).populate({
+      path: "saved_posts",
+      populate: { path: "posted_in" },
+    });
+    res.status(200).json({ saved_posts: user.saved_posts });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server error");
+  }
+};
+
 module.exports = {
   createPost,
   upvotePost,
@@ -333,4 +346,5 @@ module.exports = {
   removeDownvote,
   savePost,
   removeSavedPost,
+  getSavedPosts,
 };
