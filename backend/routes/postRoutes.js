@@ -8,10 +8,6 @@ router.post("/create", auth, postController.createPost);
 //
 router.get("/saved", auth, postController.getSavedPosts);
 //
-// router.get("/sort/:sort_type", subgreddiitController.sortSubgreddiits);
-//
-// router.get("/:name", auth, subgreddiitController.getSubgreddiitByName);
-//
 router.patch("/upvote", auth, postController.upvotePost);
 
 router.patch("/downvote", auth, postController.downvotePost);
@@ -23,5 +19,7 @@ router.patch("/removedownvote", auth, postController.removeDownvote);
 router.patch("/savepost", auth, postController.savePost);
 
 router.patch("/unsavepost", auth, postController.removeSavedPost);
+
+router.post("/comment", auth, postController.createComment);
 
 module.exports = router;

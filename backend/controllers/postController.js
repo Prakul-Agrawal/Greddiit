@@ -21,8 +21,6 @@ const createPost = async (req, res) => {
       });
     }
 
-    console.log(temp_subgreddiit.banned);
-
     let containsBannedWords = false,
       substring = "",
       substringLen = 0,
@@ -80,9 +78,108 @@ const createPost = async (req, res) => {
     await post.save();
 
     if (containsBannedWords) {
-      return res.status(200).send("Post created, however it contains banned words");
+      return res
+        .status(200)
+        .send("Post created, however it contains banned words");
     }
     res.status(200).send("Post created");
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server error");
+  }
+};
+
+const createComment = async (req, res) => {
+  const { text, comment_by_id, comment_by_name, comment_in } = req.body;
+
+  try {
+    if (comment_by_id !== req.user.id) {
+      return res.status(400).json({ msg: "Do not impersonate someone else" });
+    }
+
+    const temp_post = await Post.findById(comment_in);
+
+    if (!temp_post) {
+      return res.status(400).json({
+        msg: "No such post exists",
+      });
+    }
+
+    const temp_subgreddiit = await Subgreddiit.findOne({
+      _id: temp_post.posted_in,
+      followers: comment_by_id,
+    });
+
+    if (!temp_subgreddiit) {
+      return res.status(400).json({
+        msg: "User does not have permission to comment on this post",
+      });
+    }
+
+    let containsBannedWords = false,
+      substring = "",
+      substringLen = 0,
+      index = 0,
+      startIndex = 0,
+      indices = [];
+    const lowercaseText = text.toLowerCase();
+
+    for (let i = 0; i < temp_subgreddiit.banned.length; ++i) {
+      substring = temp_subgreddiit.banned[i];
+      substringLen = substring.length;
+      if (lowercaseText.includes(substring)) {
+        containsBannedWords = true;
+        startIndex = 0;
+        while ((index = lowercaseText.indexOf(substring, startIndex)) > -1) {
+          indices.push([index, substringLen]);
+          startIndex = index + substringLen;
+        }
+      }
+    }
+
+    let tempStr = text;
+
+    if (containsBannedWords) {
+      for (let i = 0; i < indices.length; ++i) {
+        tempStr =
+          tempStr.substring(0, indices[i][0]) +
+          "*".repeat(indices[i][1]) +
+          tempStr.substring(indices[i][0] + indices[i][1], tempStr.length);
+      }
+    }
+
+    const comment = { text: tempStr, comment_by_name };
+
+    // await Subgreddiit.findOneAndUpdate(
+    //   { _id: posted_in },
+    //   {
+    //     $push: { posts: post._id },
+    //     $inc: { posts_count: 1 },
+    //   }
+    // );
+
+    // await User.findOneAndUpdate(
+    //   { _id: posted_by_id },
+    //   {
+    //     $push: { posts: post._id },
+    //   }
+    // );
+
+    await Post.findOneAndUpdate(
+      { _id: comment_in },
+      {
+        $push: { comments: comment },
+      }
+    );
+
+    // await post.save();
+
+    if (containsBannedWords) {
+      return res
+        .status(200)
+        .send("Comment created, however it contains banned words!");
+    }
+    res.status(200).send("Comment created");
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server error");
@@ -379,4 +476,5 @@ module.exports = {
   savePost,
   removeSavedPost,
   getSavedPosts,
+  createComment,
 };

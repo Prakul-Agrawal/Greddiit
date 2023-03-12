@@ -19,8 +19,11 @@ import Dialog from "@mui/material/Dialog";
 function PostsPage() {
   const [user, setUser] = useRecoilState(userState);
   const [subgreddiit, setSubgreddiit] = useRecoilState(subgreddiitState);
+  const [post, setPost] = useState();
   const [open, setOpen] = useState(false);
+  const [openCreateComment, setOpenCreateComment] = useState(false);
   const [textData, setTextData] = useState("");
+  const [commentData, setCommentData] = useState("");
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -35,7 +38,7 @@ function PostsPage() {
   };
 
   const create = () => {
-    const createSubgreddiit = async () => {
+    const createPost = async () => {
       const config = {
         headers: {
           "x-auth-token": localStorage.getItem("token"),
@@ -58,17 +61,12 @@ function PostsPage() {
           `/api/subgreddiit/${subgreddiit.name}`,
           config
         );
-        // console.log(response.data);
         setSubgreddiit(response2.data);
         let substring = "";
         const lowercaseText = textData.toLowerCase();
-        console.log("12345");
-        console.log(subgreddiit.banned);
         for (let i = 0; i < subgreddiit.banned.length; ++i) {
           console.log(subgreddiit.banned.length);
           substring = subgreddiit.banned[i];
-          console.log(substring)
-          console.log("Reached here");
           if (lowercaseText.includes(substring)) {
             alert("Your post has banned words! They will be censored");
             break;
@@ -87,8 +85,73 @@ function PostsPage() {
         }
       }
     };
-    createSubgreddiit();
+    createPost();
     setOpen(false);
+  };
+
+  const handleClickOpenComment = (postID) => {
+    setOpenCreateComment(true);
+    setPost(postID);
+  };
+
+  const handleCloseComment = () => {
+    setOpenCreateComment(false);
+  };
+
+  const changeComment = (c) => {
+    setCommentData(c.target.value);
+  };
+
+  const createComment = () => {
+    const postComment = async () => {
+      const config = {
+        headers: {
+          "x-auth-token": localStorage.getItem("token"),
+        },
+      };
+      try {
+        await axios.post(
+          "/api/post/comment",
+          {
+            text: commentData,
+            comment_in: post,
+            comment_by_id: user._id,
+            comment_by_name: user.first_name.concat(" ", user.last_name),
+          },
+          config
+        );
+
+        const response2 = await axios.get(
+          `/api/subgreddiit/${subgreddiit.name}`,
+          config
+        );
+
+        setSubgreddiit(response2.data);
+        let substring = "";
+        const lowercaseText = commentData.toLowerCase();
+
+        for (let i = 0; i < subgreddiit.banned.length; ++i) {
+          substring = subgreddiit.banned[i];
+          if (lowercaseText.includes(substring)) {
+            alert("Your comment has banned words! They will be censored");
+            break;
+          }
+        }
+      } catch (err) {
+        if (err.response) {
+          console.log(err.response.data);
+          console.log(err.response.status);
+          console.log(err.response.headers);
+          alert(err.response.data.msg);
+        } else if (err.request) {
+          console.log(err.request);
+        } else {
+          console.log(err.message);
+        }
+      }
+    };
+    postComment();
+    setOpenCreateComment(false);
   };
 
   const respondToPostRequest = (postID, postedByID, option) => {
@@ -239,6 +302,14 @@ function PostsPage() {
           >
             Follow User
           </Button>
+          <Button
+            size="small"
+            onClick={() => {
+              handleClickOpenComment(u._id);
+            }}
+          >
+            Add Comment
+          </Button>
         </CardActions>
       </Card>
     </div>
@@ -342,6 +413,32 @@ function PostsPage() {
           <div className="flex flex-col bg-orange-600">{subgreddiitPosts}</div>
         </div>
       </div>
+      <Dialog open={openCreateComment} onClose={handleCloseComment}>
+        <DialogTitle>
+          <div className="flex justify-center text-purple-900 font-bold">
+            New Comment
+          </div>
+        </DialogTitle>
+        <DialogContent>
+          <div className="flex justify-center">
+            <DialogContentText>
+              Please fill the following details to create a new comment
+            </DialogContentText>
+          </div>
+          <TextField
+            margin="dense"
+            id="text"
+            label="CommentText"
+            fullWidth
+            variant="standard"
+            onChange={changeComment}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseComment}>Cancel</Button>
+          <Button onClick={createComment}>Create</Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 }
