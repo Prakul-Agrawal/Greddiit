@@ -84,7 +84,6 @@ function MySubgreddiitsPage() {
     };
     try {
       const response = await axios.get(`/api/subgreddiit/${sub_name}`, config);
-      // console.log(response.data);
       setMySubgreddiit(response.data);
       navigate("/dashboard/mysubgreddiits/moderated");
     } catch (err) {
@@ -109,7 +108,6 @@ function MySubgreddiitsPage() {
     };
     try {
       await axios.post("/api/subgreddiit/delete", { id: sub_id }, config);
-      // console.log(response.data);
       const response = await axios.get("/api/user", config);
       setUser(response.data.user);
     } catch (err) {

@@ -20,44 +20,17 @@ function SubgreddiitsPage() {
   const [notJoined, setNotJoined] = useState([]);
   const [sorted, setSorted] = useState([]);
   const [isSorted, setIsSorted] = useState(false);
-  // const [allSubgreddiits, setAllSubgreddiits] = useState([]);
   const [currentName, setCurrentName] = useState("");
   const [currentTags, setCurrentTags] = useState([]);
-  // const [joinedArray, setJoinedArray] = useState([]);
-  //
-  // useEffect(() => {
-  //   const getSubgreddiits = async () => {
-  //     try {
-  //       const response = await axios.get("/api/subgreddiit/all");
-  //       setAllSubgreddiits(response.data);
-  //       console.log("All Subgreddiits")
-  //       console.log(response.data);
-  //     } catch (err) {
-  //       if (err.response) {
-  //         console.log(err.response.data);
-  //         console.log(err.response.status);
-  //         console.log(err.response.headers);
-  //       } else if (err.request) {
-  //         console.log(err.request);
-  //       } else {
-  //         console.log(err.message);
-  //       }
-  //     }
-  //   };
-  //   getSubgreddiits();
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
 
   const nameChange = (c) => {
     setCurrentName(c.target.value);
-    // console.log(currentName);
   };
 
   const tagsChange = (c) => {
     const split_tags = c.target.value.split(" ");
     const lower_tags = split_tags.map((word) => word.toLowerCase());
     setCurrentTags(lower_tags);
-    // console.log(currentName);
   };
 
   const getNotJoined = async () => {
@@ -104,7 +77,6 @@ function SubgreddiitsPage() {
 
   useEffect(() => {
     getNotJoined();
-    // console.log(user);
   }, []);
 
   const leave = (subgreddiitID) => {
@@ -180,7 +152,6 @@ function SubgreddiitsPage() {
     };
     try {
       const response = await axios.get(`/api/subgreddiit/${sub_name}`, config);
-      // console.log(response.data);
       setSubgreddiit(response.data);
       navigate("/dashboard/subgreddiits/specific");
     } catch (err) {
@@ -204,21 +175,6 @@ function SubgreddiitsPage() {
       </div>
     );
   }
-
-  // const getLimitedJoined = (c) => {
-  //   console.log("Inside getLimitedJoined");
-  //   console.log(c.target.value);
-  //   let tempJoinedArray = [];
-  //   let len = user.joined_subgreddiits.length;
-  //   for (let i = 0; i < len; i++) {
-  //     if (user.joined_subgreddiits[i].name.includes(c.target.value)) {
-  //       tempJoinedArray.push(user.joined_subgreddiits[i]);
-  //     }
-  //   }
-  //   setJoinedArray(tempJoinedArray);
-  //   // console.log("Array");
-  //   // console.log(joinedArray);
-  // };
 
   const options = {
     includeScore: true,
@@ -419,9 +375,6 @@ function SubgreddiitsPage() {
     }
   });
 
-  // console.log("Hererererer");
-  // console.log(user.joined_subgreddiits);
-
   return (
     <>
       <div className="flex mx-auto text-7xl font-extrabold text-white m-5">
@@ -500,11 +453,7 @@ function SubgreddiitsPage() {
         <div className="flex flex-col bg-orange-600">{sortedSubgreddiits}</div>
       ) : (
         <div className="flex flex-col bg-orange-600">
-          {/*{console.log("Why not this")}*/}
-          {/*{console.log(joinedSubgreddiits)}*/}
           {joinedSubgreddiits}
-          {/*{console.log("Currently here")}*/}
-          {/*{console.log(notJoinedSubgreddiits)}*/}
           {notJoinedSubgreddiits}
         </div>
       )}

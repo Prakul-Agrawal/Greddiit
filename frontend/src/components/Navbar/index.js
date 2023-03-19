@@ -2,7 +2,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import PersonIcon from "@mui/icons-material/Person";
 import ListAltIcon from "@mui/icons-material/ListAlt";
 import TextureIcon from "@mui/icons-material/Texture";
-import BookmarksIcon from '@mui/icons-material/Bookmarks';
+import BookmarksIcon from "@mui/icons-material/Bookmarks";
 import { Link } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { userState } from "../../atoms/user";

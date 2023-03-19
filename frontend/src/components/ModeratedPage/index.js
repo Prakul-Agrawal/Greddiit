@@ -175,7 +175,7 @@ function ModeratedPage() {
               Users
             </div>
             <div className="flex flex-col bg-orange-600">
-            {subgreddiitUsers}
+              {subgreddiitUsers}
             </div>
           </div>
         ) : displayOption === 2 ? (
@@ -184,7 +184,7 @@ function ModeratedPage() {
               Join Requests
             </div>
             <div className="flex flex-col bg-orange-600">
-            {subgreddiitRequests}
+              {subgreddiitRequests}
             </div>
           </div>
         ) : displayOption === 3 ? (

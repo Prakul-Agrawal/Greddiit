@@ -65,7 +65,6 @@ function PostsPage() {
         let substring = "";
         const lowercaseText = textData.toLowerCase();
         for (let i = 0; i < subgreddiit.banned.length; ++i) {
-          // console.log(subgreddiit.banned.length);
           substring = subgreddiit.banned[i];
           if (substring && lowercaseText.includes(substring)) {
             alert("Your post has banned words! They will be censored");

@@ -1,6 +1,6 @@
 import { atom } from "recoil";
 
 export const mySubgreddiitState = atom({
-    key: "mySubgreddiitState",
-    default: {},
+  key: "mySubgreddiitState",
+  default: {},
 });
