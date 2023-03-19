@@ -150,29 +150,12 @@ const createComment = async (req, res) => {
 
     const comment = { text: tempStr, comment_by_name };
 
-    // await Subgreddiit.findOneAndUpdate(
-    //   { _id: posted_in },
-    //   {
-    //     $push: { posts: post._id },
-    //     $inc: { posts_count: 1 },
-    //   }
-    // );
-
-    // await User.findOneAndUpdate(
-    //   { _id: posted_by_id },
-    //   {
-    //     $push: { posts: post._id },
-    //   }
-    // );
-
     await Post.findOneAndUpdate(
       { _id: comment_in },
       {
         $push: { comments: comment },
       }
     );
-
-    // await post.save();
 
     if (containsBannedWords) {
       return res

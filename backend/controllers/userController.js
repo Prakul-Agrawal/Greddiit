@@ -149,11 +149,11 @@ const remove_follower = async (req, res) => {
     );
 
     await User.findOneAndUpdate(
-        { _id: req.body.id },
-        {
-          $pull: { following: req.user.id },
-          $inc: { following_count: -1 },
-        }
+      { _id: req.body.id },
+      {
+        $pull: { following: req.user.id },
+        $inc: { following_count: -1 },
+      }
     );
 
     res.status(200).json("Follower removed");
@@ -182,11 +182,11 @@ const unfollow = async (req, res) => {
     );
 
     await User.findOneAndUpdate(
-        { _id: req.body.id },
-        {
-          $pull: { followers: req.user.id },
-          $inc: { followers_count: -1 },
-        }
+      { _id: req.body.id },
+      {
+        $pull: { followers: req.user.id },
+        $inc: { followers_count: -1 },
+      }
     );
 
     res.status(200).json("Unfollowed user");
@@ -219,11 +219,11 @@ const follow = async (req, res) => {
     );
 
     await User.findOneAndUpdate(
-        { _id: req.body.id },
-        {
-          $push: { followers: req.user.id },
-          $inc: { followers_count: 1 },
-        }
+      { _id: req.body.id },
+      {
+        $push: { followers: req.user.id },
+        $inc: { followers_count: 1 },
+      }
     );
 
     res.status(200).json("Followed user");

@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.post("/create", auth, subgreddiitController.createSubgreddiit);
 
-router.post("/delete", auth, subgreddiitController.deleteSubgreddiit)
+router.post("/delete", auth, subgreddiitController.deleteSubgreddiit);
 
 router.get("/notjoined", auth, subgreddiitController.getNotJoinedSubgreddiits);
 

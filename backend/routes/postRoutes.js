@@ -5,9 +5,9 @@ const auth = require("../middleware/auth");
 const router = express.Router();
 
 router.post("/create", auth, postController.createPost);
-//
+
 router.get("/saved", auth, postController.getSavedPosts);
-//
+
 router.patch("/upvote", auth, postController.upvotePost);
 
 router.patch("/downvote", auth, postController.downvotePost);
