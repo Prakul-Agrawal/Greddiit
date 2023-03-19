@@ -101,6 +101,31 @@ function MySubgreddiitsPage() {
     }
   };
 
+  const deleteSubgreddiit = async (sub_id) => {
+    const config = {
+      headers: {
+        "x-auth-token": localStorage.getItem("token"),
+      },
+    };
+    try {
+      await axios.post("/api/subgreddiit/delete", { id: sub_id }, config);
+      // console.log(response.data);
+      const response = await axios.get("/api/user", config);
+      setUser(response.data.user);
+    } catch (err) {
+      if (err.response) {
+        console.log(err.response.data);
+        console.log(err.response.status);
+        console.log(err.response.headers);
+        alert(err.response.data.msg);
+      } else if (err.request) {
+        console.log(err.request);
+      } else {
+        console.log(err.message);
+      }
+    }
+  };
+
   if (!user._id) {
     return (
       <div className="flex justify-center items-center text-8xl font-bold h-full">
@@ -131,7 +156,14 @@ function MySubgreddiitsPage() {
           </div>
         </CardContent>
         <CardActions>
-          <Button size="small">Delete Subgreddiit</Button>
+          <Button
+            size="small"
+            onClick={() => {
+              deleteSubgreddiit(s._id);
+            }}
+          >
+            Delete Subgreddiit
+          </Button>
           <Button
             size="small"
             onClick={() => {

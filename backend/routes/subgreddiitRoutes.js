@@ -6,6 +6,8 @@ const router = express.Router();
 
 router.post("/create", auth, subgreddiitController.createSubgreddiit);
 
+router.post("/delete", auth, subgreddiitController.deleteSubgreddiit)
+
 router.get("/notjoined", auth, subgreddiitController.getNotJoinedSubgreddiits);
 
 router.get("/sort/:sort_type", subgreddiitController.sortSubgreddiits);
@@ -19,7 +21,5 @@ router.patch("/joinrequest", auth, subgreddiitController.sendJoinRequest);
 router.patch("/acceptrequest", auth, subgreddiitController.acceptJoinRequest);
 
 router.patch("/rejectrequest", auth, subgreddiitController.rejectJoinRequest);
-
-router.delete("/delete", auth, subgreddiitController.deleteSubgreddiit)
 
 module.exports = router;
