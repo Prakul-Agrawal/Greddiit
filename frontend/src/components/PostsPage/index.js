@@ -312,6 +312,20 @@ function PostsPage() {
           </Button>
         </CardActions>
       </Card>
+      {u.comments.map((c, index) => (
+        <div key={index} className="mt-1">
+          <Card sx={{ maxWidth: "30vw", margin: "auto" }}>
+            <CardContent>
+              <div className="text-center mb-2">{c.text}</div>
+              <div className="flex justify-center">
+                <div className="text-center w-1/2">
+                  Comment by: {c.comment_by_name}
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      ))}
     </div>
   ));
 
@@ -428,7 +442,7 @@ function PostsPage() {
           <TextField
             margin="dense"
             id="text"
-            label="CommentText"
+            label="Comment Text"
             fullWidth
             variant="standard"
             onChange={changeComment}
