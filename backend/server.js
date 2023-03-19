@@ -14,11 +14,11 @@ mongoose
   .then(() => server.listen(process.env.PORT, () => console.log("Connected")))
   .catch((err) => console.log(err));
 
-server.use("/api/user", userRoutes);
+server.use("/user", userRoutes);
 
-server.use("/api/subgreddiit", subgreddiitRoutes);
+server.use("/subgreddiit", subgreddiitRoutes);
 
-server.use("/api/post", postRoutes);
+server.use("/post", postRoutes);
 
 server.get("/", (req, res) => {
   res.send("<p>Home Page</p>");
