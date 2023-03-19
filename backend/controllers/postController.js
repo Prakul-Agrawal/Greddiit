@@ -32,7 +32,7 @@ const createPost = async (req, res) => {
     for (let i = 0; i < temp_subgreddiit.banned.length; ++i) {
       substring = temp_subgreddiit.banned[i];
       substringLen = substring.length;
-      if (lowercaseText.includes(substring)) {
+      if (substring && lowercaseText.includes(substring)) {
         containsBannedWords = true;
         startIndex = 0;
         while ((index = lowercaseText.indexOf(substring, startIndex)) > -1) {
@@ -127,7 +127,7 @@ const createComment = async (req, res) => {
     for (let i = 0; i < temp_subgreddiit.banned.length; ++i) {
       substring = temp_subgreddiit.banned[i];
       substringLen = substring.length;
-      if (lowercaseText.includes(substring)) {
+      if (substring && lowercaseText.includes(substring)) {
         containsBannedWords = true;
         startIndex = 0;
         while ((index = lowercaseText.indexOf(substring, startIndex)) > -1) {
